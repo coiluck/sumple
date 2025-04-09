@@ -1,0 +1,99 @@
+.fadein {  /* もっとも一般的なフェードイン */
+  animation: fadeIn 1s;
+  animation-fill-mode: both;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.fadeout {  /* もっとも一般的なフェードアウト */
+  animation: fadeOut 1s;
+  animation-fill-mode: both;
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.fadein-title {
+  animation: fadeInTitle 5s;
+  animation-fill-mode: both;
+}
+@keyframes fadeInTitle {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.fadein-title-button {
+  animation: fadeInTitleButton 3s;
+  animation-fill-mode: both;
+}
+@keyframes fadeInTitleButton {
+  0% {
+    opacity: 0;
+    top: 90%;
+  }
+  100% {
+    opacity: 1;
+    top: 85%;
+  }
+}
+.fast-fadein {  /* もっとも一般的なフェードイン */
+  animation: fastFadeIn .5s;
+  animation-fill-mode: both;
+}
+@keyframes fastFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.fast-fadeout {  /* もっとも一般的なフェードアウト */
+  animation: fastFadeOut .5s;
+  animation-fill-mode: both;
+}
+@keyframes fastFadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.no-display {
+  display: none !important;
+}
+.yes-display {
+  display: block;
+}
+body,a,p,h1,h2,button {
+  margin: 0;
+  padding: 0;
+  font-family: "Times New Roman", "游明朝", "Yu Mincho", "游明朝体", "YuMincho", "ヒラギノ明朝 Pro W3", "Hiragino Mincho Pro", "HiraMinProN-W3", "ＭＳ Ｐ明朝", "MS PMincho", serif;
+  -webkit-user-select: none;
+  user-select: none;
+}
+html {
+  width: 100%;
+  min-height: 100%;
+}
+body {
+  background-color: black;
+  width: 100%;
+  min-height: 100%;
+}
+button {
+  cursor: pointer;
+}

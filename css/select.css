@@ -1,0 +1,131 @@
+#modal-select {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  background-color: #111;
+  box-sizing: border-box;
+  z-index: 900;
+}
+
+#modal-select .title {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#modal-select .title h1 {
+  font-size: 1.4rem;
+  color: #8b0000;
+}
+
+#modal-select .content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 10px;
+}
+
+.character-list, .chosen-characters {
+  background-color: #1e1e1e;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7); 
+}
+
+.chosen-characters {
+  display: flex;
+  flex-direction: column;
+}
+
+.character {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #121212;
+  border: 2px solid #8b0000;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+.character:hover {
+  background-color: #444;
+  transform: scale(1.03);
+}
+.character:last-child {
+  margin-bottom: 0;
+}
+
+.character-face {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 15px;
+  border: 1px solid #f6d893;
+}
+
+.character-info p {
+  margin: 5px 0;
+  color: #ccc;
+  font-size: .7em;
+}
+
+#modal-select .content .character-list h2,
+#modal-select .content .chosen-characters h2 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #8b0000;
+  border-bottom: 2px solid #8b0000;
+  padding-bottom: 5px; 
+}
+
+#chosen-list {
+  font-size: 1rem;
+  line-height: 1.5;
+  list-style: none;
+  padding: 0;
+  flex: 1;
+}
+
+#chosen-list li {
+  background-color: #121212;
+  color: #ccc;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: .7em;
+}
+
+/* 確定ボタン */
+.actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+#confirm-button {
+  background-color: transparent;
+  color: #e0e0e0;
+  border: none;
+  border-bottom: 1px solid #8b0000;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  #modal-select {
+    overflow-y: scroll; 
+  }
+  
+  #modal-select .content {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    margin: 0 15px;
+  }
+  
+  #modal-select .character-list,
+  #modal-select .chosen-characters {
+    width: 100%;
+  }
+}

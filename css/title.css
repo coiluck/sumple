@@ -1,0 +1,294 @@
+/* 基本設定 */
+@font-face {
+  font-family: 'bokor'; 
+  src: url('../fonts/Bokor-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'melete'; 
+  src: url('../fonts/Melete-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'yujimai'; 
+  src: url('../fonts/YujiMai-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.fadein-title {
+  animation: fadeInTitle 5s;
+  animation-fill-mode: both;
+}
+@keyframes fadeInTitle {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.fadein-title-button {
+  animation: fadeInTitleButton 3s;
+  animation-fill-mode: both;
+}
+@keyframes fadeInTitleButton {
+  0% {
+    opacity: 0;
+    top: 90%;
+  }
+  100% {
+    opacity: 1;
+    top: 85%;
+  }
+}
+.fadeout-title {
+  animation: fadeOutTitle 1s;
+  animation-fill-mode: both;
+}
+@keyframes fadeOutTitle {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+.fast-fadein-text {  /* もっとも一般的なフェードイン */
+  animation: fastFadeInText .5s;
+  animation-fill-mode: both;
+}
+@keyframes fastFadeInText {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: .7;
+  }
+}
+.fast-fadeout-text {  /* もっとも一般的なフェードアウト */
+  animation: fastFadeOutText .5s;
+  animation-fill-mode: both;
+}
+@keyframes fastFadeOutText {
+  0% {
+    opacity: .7;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* タイトル部分 */
+#modal-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  overflow: hidden;
+}
+.title-background {
+  width: 100%;
+  height: 100%;
+}
+.title-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#title-JPN {
+  position: absolute;
+  top: 30%;
+  font-size: 2em;
+  font-family: "yujimai", serif;
+  color: #ddd;
+  text-shadow: 4px 2px 8px rgba(224, 224, 224, 0.8);
+}
+#title-GER {
+  position: absolute;
+  top: 40%;
+  font-size: 1em;
+  font-family: "bokor", sans-serif;
+  color: #ddd;
+  text-shadow: 4px 2px 8px rgba(224, 224, 224, 0.8);
+}
+#start-button {
+  display: none;
+  position: absolute;
+  top: 100%;
+  font-family: "melete", sans-serif;
+  color: #ddd;
+  background: transparent;
+}
+/* 下線アニメーション */
+#start-button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #ddd;
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);;
+}
+#start-button.active::after {
+  width: 100%;
+}
+
+
+/* 国家選択 */
+.country-sections {
+  display: none;
+}
+#select-text {
+  display: none;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ddd;
+}
+#select-GER {
+  display: none;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  min-height: 40%;
+  background-color: #fff; /* 見えちゃダメ */
+  text-align: center;
+  cursor: pointer;
+}
+.select-country-haikei {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.select-country-haikei img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+}
+#select-GER .select-country-haikei img {
+  filter: contrast(150%);
+}
+@media screen and (max-width: 599px) {
+  #select-GER .select-country-haikei img {
+    content: url("../image/GER_tank.jpg");
+  }
+}
+#select-GER h2, #select-JPN h2 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1em;
+  width: 100%;
+}
+#select-GER p, #select-JPN p {
+  font-size: .6em;
+  font-family: "Times New Roman", "游明朝", "Yu Mincho", "游明朝体", "YuMincho", "ヒラギノ明朝 Pro W3", "Hiragino Mincho Pro", "HiraMinProN-W3", "ＭＳ Ｐ明朝", "MS PMincho", serif;
+  text-align: left;
+  color: #ddd;
+  padding: 5px 5px;
+  position: absolute;
+  bottom: 0px;
+  z-index: 1;
+}
+/* 文字の背景黒く */
+#select-GER p::before, #select-JPN p::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+  z-index: -1;
+}
+#select-country-confirm {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  font-size: 1.2em;
+  background: transparent;
+  border: none;
+  color: #ddd;
+}
+/* 下線アニメーション */
+#select-country-confirm::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #ddd;
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);;
+}
+#select-country-confirm.active::after {
+  width: 100%;
+}
+/* スキップ処理（いろんなとこで使うからここに書いとこ） */
+#skip-window {
+  position: absolute;
+  display: none;
+  background-color: #ccc;
+  border: 1px solid #555;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 20px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+#skip-window p {
+  color: #333;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+#skip-cancel, #skip-button {
+  flex-grow: 1;
+  padding: 10px;
+  margin: 0 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+}
+#skip-cancel {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #d3d3d3;
+}
+#skip-cancel:hover {
+  background-color: #e0e0e0;
+}
+#skip-button {
+  background-color: #333;
+  color: white;
+  border: 1px solid #222;
+}
+#skip-button:hover {
+  background-color: #555;
+}

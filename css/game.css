@@ -1,0 +1,330 @@
+#modal-game {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  z-index: 400;
+  color: #e0e0e0;
+  background-color: #121212;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+.game-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  z-index: -1;
+}
+.game-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #1e1e1e;
+  padding: 10px;
+  border-bottom: 2px solid #6b0f0f;
+  margin-bottom: 20px;
+}
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .7rem;
+}
+.personnel-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.personnel-btn {
+  background-color: #6b0f0f;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.personnel-btn:hover {
+  background-color: #8b0000;
+}
+.game-screen {
+  background-color: #1e1e1e;
+  padding: 20px;
+  z-index: 1;
+}
+.scenario-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.scenario-title {
+  color: #8b0000;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+.choices-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.choice-card {
+  background-color: #121212;
+  border: 2px solid #8b0000;
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+.choice-card:hover {
+  background-color: #444;
+  transform: scale(1.03);
+}
+.choice-card p {
+  font-size: .9em;
+}
+
+@media (max-width: 600px) {
+  /* スクロール可能に */
+    #modal-game {
+    overflow-y: scroll; 
+    min-height: 100vh; /* 画面の高さ全体を確保 */
+  }
+  .game-background {
+    position: fixed; /* スクロール時も背景を固定 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .game-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  /* 数値配置を二列に */
+  .status-bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    align-items: center;
+    justify-items: center;
+  }
+  .status-item {
+    align-items: center;
+    text-align: center;
+  }
+  .personnel-control {
+    align-items: center;
+  }
+  /* 選択肢を縦方向に並べる */
+  .choices-section {
+    grid-template-columns: 1fr;
+  }
+  /* 選択肢タイトルが浮いて見えたので */
+  .choice-card h3 {
+    margin-top: 0;
+  }
+  /* ボタン小さく */
+  .personnel-btn {
+    height: 25px;
+    width: 25px;
+  }
+}
+#game-tutorial {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.black-layer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: .4;
+  background-color: #000;
+}
+.tutorial-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 60%;
+  height: auto;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  background-color: #ccc;
+  color: #1e1e1e;
+  padding: 20px;
+  gap: 20px;
+}
+.tutorial-text a {
+  color: #6088C6;
+}
+.tutorial-text a:hover {
+    color: #0066cc;
+  }
+#game-tutorial-close {
+  padding: 10px;
+  background-color: #333;
+  color: white;
+  border: 1px solid #222; 
+}
+.gameText-screen {
+  position: absolute;
+  width: 100%;
+  top: 85%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 15%;
+  background-color: #000;
+  opacity: 0.7;
+  border: none;
+  border-top: 1px solid #f6d893;
+}
+#game-text {
+  margin: 10px 20px;
+  color: #eee;
+  user-select: none;
+  opacity: 1;
+}
+
+
+#game-button-will {
+  display: none; /* 使うときはblockではなくflexを指定して */
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  max-width: 300px;
+  min-height: 1.5em;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  color: #1e1e1e;
+  background-color: #e0e0e0;
+  border: none;
+  font-size: 1em;
+  background-image: url('../image/paper.jpg');
+  background-size: cover;
+  background-blend-mode: luminosity;
+  cursor: pointer;
+}
+#game-button-will::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(255, 255, 255, 0.7); /* 内側の枠線 */
+  pointer-events: none;
+}
+#game-button-will::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 1px solid rgba(255, 255, 255, 0.7); /* 外側の枠線 */
+  pointer-events: none;
+}
+
+.two-button-container {
+  display: none; /* 使うときはflexね！ */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+.two-button-container button {
+  width: 60%;
+  max-width: 300px;
+  min-height: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  color: #1e1e1e;
+  background-color: #e0e0e0;
+  border: none;
+  font-size: 1em;
+  background-image: url('../image/paper.jpg');
+  background-size: cover;
+  background-blend-mode: luminosity;
+  cursor: pointer;
+}
+#save-Jew {
+  position: relative;
+}
+#save-Jew::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(255, 255, 255, 0.7); /* 内側の枠線 */
+  pointer-events: none;
+}
+#save-Jew::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 1px solid rgba(255, 255, 255, 0.7); /* 外側の枠線 */
+  pointer-events: none;
+}
+#ignore-Jew {
+  position: relative;
+}
+#ignore-Jew::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(255, 255, 255, 0.7); /* 内側の枠線 */
+  pointer-events: none;
+}
+#ignore-Jew::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 1px solid rgba(255, 255, 255, 0.7); /* 外側の枠線 */
+  pointer-events: none;
+}
