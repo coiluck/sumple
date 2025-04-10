@@ -96,13 +96,8 @@
 }
 
 @media (max-width: 600px) {
-  /* スクロール可能に */
-    #modal-game {
-    overflow-y: scroll; 
-    min-height: 100vh; /* 画面の高さ全体を確保 */
-  }
   .game-background {
-    position: fixed; /* スクロール時も背景を固定 */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -195,8 +190,7 @@
   position: absolute;
   width: 100%;
   top: 85%;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
   height: 15%;
   background-color: #000;
   opacity: 0.7;
@@ -206,7 +200,6 @@
 #game-text {
   margin: 10px 20px;
   color: #eee;
-  user-select: none;
   opacity: 1;
 }
 

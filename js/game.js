@@ -205,13 +205,21 @@ function updateChoices() {
   choiceCards.forEach((card, index) => {
     const scenario = gameScenarios[currentRound][index];
     const effectDescriptions = scenario.effects.map(effect => {
-      const sign = effect.value >= 0 ? "+" : "";
-      return `${effect.stat}: ${sign}${effect.value}`;
+      let statName;
+      switch (effect.stat) {
+        case 'resources': statName = '資源'; break;
+        case 'relations': statName = '他国との関係'; break;
+        case 'progress': statName = '研究進度'; break;
+        case 'moon-development': statName = '月面開発'; break;
+        default: statName = '不明';
+      }
+      const sign = effect.value > 0 ? "+" : ""; // 負の場合は+を付けない
+      return `${statName}: ${sign}${effect.value}`;
     }).join(', ');
-
+    
     card.querySelector("h3").textContent = scenario.title;
     card.querySelector("p").textContent = effectDescriptions;
-    card.id = `selestion${index + 1}`;
+    card.id = `GER-selestion${index + 1}`;
   });
 }
 
@@ -223,8 +231,21 @@ function updateStoryText() {
   if (currentStoryIndex < currentScenario.stories.length) {
     gameTextElement.textContent = currentScenario.stories[currentStoryIndex];
     currentStoryIndex++;
+  }  else if (currentRound === 1) { // 4にあとで買える
+    console.log("中間ストーリーに移行します");
+    // ストーリーの最後ならボタンを表示（ただし特別な関数を設定）
+    const button = document.getElementById("game-button-will");
+    button.textContent = currentScenario.buttonText;
+    button.style.display = "flex";
+    
+    // モーダルのイベントリスナーを削除
+    document.getElementById('modal-game').removeEventListener('click', handleModalClick);
+    
+    // ボタンに特別なイベントリスナーを追加
+    button.addEventListener('click', showMiddleStory);
   } else {
     // ストーリーの最後ならボタンを表示
+    console.log("中間ストーリーに移行しません");
     const button = document.getElementById("game-button-will");
     button.textContent = currentScenario.buttonText;
     button.style.display = "flex";
@@ -244,7 +265,8 @@ function resetToChoices() {
   isSeeingStory = false;
 
   document.getElementById("game-button-will").style.display = "none";
-  document.getElementById("gameTextBox").style.display = "none";
+  document.getElementById("gameTextBox").classList.remove("yes-display");
+  document.getElementById("gameTextBox").classList.add("no-display");
   document.getElementById("game-choice").style.display = "block";
   
   // 新しい選択肢を表示（まだラウンドがある場合）
@@ -274,7 +296,8 @@ function handleChoiceClick(event) {
   
   // 選択肢を非表示にしてテキストを表示
   document.getElementById("game-choice").style.display = "none";
-  document.getElementById("gameTextBox").style.display = "block";
+  document.getElementById("gameTextBox").classList.remove("no-display");
+  document.getElementById("gameTextBox").classList.add("yes-display");
   
   // 最初のストーリーテキストを表示
   updateStoryText();
@@ -306,3 +329,58 @@ function initializeGame() {
 document.addEventListener('DOMContentLoaded', function() {
   initializeGame();
 });
+
+
+
+// 追加する特別なミドルストーリー処理関数
+let middleStoryIndex = 0;
+const middleStoryTexts = [
+  "特別なストーリー1",
+  "特別なストーリー2",
+  "特別なストーリー3",
+  "特別なストーリー4"
+];
+
+function showMiddleStory() {
+  console.log("中間ストーリー開始");
+  const gameTextElement = document.getElementById('game-text');
+  const button = document.getElementById("game-button-will");
+  
+  // ボタンを一旦非表示に
+  button.style.display = "none";
+  
+  if (middleStoryIndex < middleStoryTexts.length) {
+    // 次のミドルストーリーテキストを表示
+    gameTextElement.textContent = middleStoryTexts[middleStoryIndex];
+    middleStoryIndex++;
+    
+    // モーダルにイベントリスナーを再追加
+    document.getElementById('modal-game').addEventListener('click', handleMiddleStoryClick);
+  } else {
+    // ミドルストーリーが終わったら通常の進行に戻る
+    resetToChoices();
+    // ミドルストーリーのインデックスをリセット
+    middleStoryIndex = 0;
+  }
+}
+
+// ミドルストーリー用のクリックハンドラ
+function handleMiddleStoryClick() {
+  if (middleStoryIndex < middleStoryTexts.length) {
+    // 次のミドルストーリーテキストを表示
+    const gameTextElement = document.getElementById('game-text');
+    gameTextElement.textContent = middleStoryTexts[middleStoryIndex];
+    middleStoryIndex++;
+  } else {
+    // テキストの最後まで来たらボタンを表示
+    const button = document.getElementById("game-button-will");
+    button.textContent = "物語を続ける";
+    button.style.display = "flex";
+    
+    // モーダルのイベントリスナーを削除
+    document.getElementById('modal-game').removeEventListener('click', handleMiddleStoryClick);
+    
+    // ボタンにイベントリスナーを追加
+    button.addEventListener('click', resetToChoices);
+  }
+}
