@@ -26,6 +26,8 @@ const decreasePersonnel = function(){
   countElement.textContent = count;
   // 消費予想も反映
   UpdateResourcesCost(count);
+  // 効果予想も更新
+  updateEffects(count);
   // 一定の範囲内になるように
   if (count <= 30) {
     decreaseButton.style.visibility = "hidden"; // レイアウト計算を保ったまま非表示
@@ -46,6 +48,8 @@ const increasePersonnel = function(){
   countElement.textContent = count;
   // 消費予想も反映
   UpdateResourcesCost(count);
+  // 効果予想も更新
+  updateEffects(count);
   // 一定の範囲内になるように
   if (count > 30) {
     decreaseButton.style.visibility = "visible" // 表示
@@ -66,13 +70,60 @@ function UpdateResourcesCost(count) {
   const hokyuuCost = 500 * window.gameDataByChar.hokyuu;
   costElement.textContent = "-" + shouhiCost + " +" + hokyuuCost;
   // 獲得スコアを更新
-}
+};
 
 // キャラ選択後に確定したgameDataByCharを使って更新
 document.getElementById("confirm-button").addEventListener("click", function() {
   const count = parseInt(document.getElementById("personnel-count").textContent, 10);
   UpdateResourcesCost(count);
 });
+
+// スコア倍率を表示されている選択肢に適用
+function updateEffects(count) {
+  const scoreRatio = [1, 1.13, 1.23, 1.31, 1.38, 1.44, 1.5];
+  const ratioIndex = Math.floor((count - 30) / 10);
+  // 範囲内に収める（0未満は0、配列長以上は最大値）
+  const safeIndex = Math.max(0, Math.min(ratioIndex, scoreRatio.length - 1));
+  const ratio = scoreRatio[safeIndex];
+  // 現在表示されている選択肢を取得
+  const choiceCards = document.querySelectorAll(".choice-card");
+  choiceCards.forEach((card, index) => {
+    // データを取得
+    const scenario = gameScenarios[currentRound][index];
+    const effectDescriptions = scenario.effects.map(effect => {
+      let statName;
+      switch (effect.stat) {
+        case 'resources': statName = '資源'; break;
+        case 'relations': statName = '他国との関係'; break;
+        case 'progress': statName = '研究進度'; break;
+        case 'moon-development': statName = '月面開発'; break;
+        default: statName = '不明';
+      }
+      // 計算値の設定
+      let calculatedValue;
+      if (effect.value < 0) {
+        // 負の値はそのまま
+        calculatedValue = effect.value;
+      } else {
+        // 特別処理
+        if (effect.stat === 'progress') {
+          // progressの場合はkennkyuuをかける
+          calculatedValue = Math.floor(effect.value * ratio * window.gameDataByChar.kennkyuu);
+        } else if (effect.stat === 'relations') {
+          // relationsの場合はkannkeiをかける
+          calculatedValue = Math.floor(effect.value * ratio * window.gameDataByChar.kannkei);
+        } else {
+          // その他の正の値
+          calculatedValue = Math.floor(effect.value * ratio);
+        }
+      }
+      const sign = calculatedValue > 0 ? "+" : ""; // 負の場合は+を付けない
+      return `${statName}: ${sign}${calculatedValue}`;
+    }).join(', ');
+    // カード内の効果を更新
+    card.querySelector("p").textContent = effectDescriptions;
+  });
+}
 
 
 // ゲームシナリオデータ
@@ -223,6 +274,7 @@ function updateChoices() {
   });
 }
 
+
 // ストーリーテキストを更新する関数
 function updateStoryText() {
   const currentScenario = gameScenarios[currentRound][currentScenarioIndex];
@@ -231,7 +283,7 @@ function updateStoryText() {
   if (currentStoryIndex < currentScenario.stories.length) {
     gameTextElement.textContent = currentScenario.stories[currentStoryIndex];
     currentStoryIndex++;
-  }  else if (currentRound === 1) { // 4にあとで買える
+  } else if (currentRound === 1) { // 2ラウンド目の終了時に中間ストーリーへ
     console.log("中間ストーリーに移行します");
     // ストーリーの最後ならボタンを表示（ただし特別な関数を設定）
     const button = document.getElementById("game-button-will");
@@ -242,10 +294,9 @@ function updateStoryText() {
     document.getElementById('modal-game').removeEventListener('click', handleModalClick);
     
     // ボタンに特別なイベントリスナーを追加
-    button.addEventListener('click', showMiddleStory);
+    button.onclick = showMiddleStory(); // この部分を変更
   } else {
     // ストーリーの最後ならボタンを表示
-    console.log("中間ストーリーに移行しません");
     const button = document.getElementById("game-button-will");
     button.textContent = currentScenario.buttonText;
     button.style.display = "flex";
@@ -254,17 +305,21 @@ function updateStoryText() {
     document.getElementById('modal-game').removeEventListener('click', handleModalClick);
     
     // ボタンにイベントリスナーを追加
-    button.addEventListener('click', resetToChoices);
+    button.onclick = resetToChoices; // この部分を変更
   }
 }
 
 // 選択肢画面に戻る関数
 function resetToChoices() {
+  // 既存のイベントリスナーを削除
+  const button = document.getElementById("game-button-will");
+  button.onclick = null;
+  
   currentRound++;
   currentStoryIndex = 0;
   isSeeingStory = false;
 
-  document.getElementById("game-button-will").style.display = "none";
+  button.style.display = "none";
   document.getElementById("gameTextBox").classList.remove("yes-display");
   document.getElementById("gameTextBox").classList.add("no-display");
   document.getElementById("game-choice").style.display = "block";
@@ -272,6 +327,12 @@ function resetToChoices() {
   // 新しい選択肢を表示（まだラウンドがある場合）
   if (currentRound < gameScenarios.length) {
     updateChoices();
+    console.log("ゲーム選択肢を更新しました");
+    // 物資を補充
+    const resourcesElement = document.getElementById("resources");
+    let resources = parseInt(resourcesElement.textContent, 10);
+    resources += 500 * window.gameDataByChar.hokyuu;
+    resourcesElement.textContent = resources;
   } else {
     // ゲーム終了処理
     console.log("ゲーム終了：ここに終了処理を書いてください");
@@ -282,27 +343,76 @@ function resetToChoices() {
 // 選択肢クリック時の処理
 function handleChoiceClick(event) {
   if (isSeeingStory) return;
-  
+  // 物資の減少
+  const personnelCount = parseInt(document.getElementById("personnel-count").textContent, 10);
+  const resourcesElement = document.getElementById("resources");
+  let resources = parseInt(resourcesElement.textContent, 10);
+  const resourceCost = Math.floor(200 + personnelCount * 5 * window.gameDataByChar.shouhi);
+  resources -= resourceCost;
+  resourcesElement.textContent = resources;
+  // 物資が0未満になった場合
+  if (resources < 0) {
+    console.log("失敗しました - 物資管理");
+    determineEndingToBadEnd();
+  }
+  // 選択肢の効果を反映
   // クリックされた選択肢カードに対応するシナリオのインデックスを取得
+  let selectedScenarioIndex = -1;
   const choiceCards = document.querySelectorAll(".choice-card");
   choiceCards.forEach((card, index) => {
     if (card === event.currentTarget) {
+      selectedScenarioIndex = index;
       currentScenarioIndex = index;
-      
-      // 選択したシナリオの効果をログに表示
-      console.log("Selected scenario effects:", gameScenarios[currentRound][index].effects);
+      // 選択した効果をログに表示
+      console.log("今から適用します - ", gameScenarios[currentRound][index].effects);
     }
   });
-  
+  // 選択した効果を反映
+  if (selectedScenarioIndex !== -1) {
+    const selectedScenario = gameScenarios[currentRound][selectedScenarioIndex];
+    const effects = selectedScenario.effects;
+    // 人員数に基づく倍率を計算
+    const count = personnelCount;
+    const scoreRatio = [1, 1.13, 1.23, 1.31, 1.38, 1.44, 1.5];
+    const ratioIndex = Math.floor((count - 30) / 10);
+    const safeIndex = Math.max(0, Math.min(ratioIndex, scoreRatio.length - 1));
+    const ratio = scoreRatio[safeIndex];
+    // 各効果を反映
+    effects.forEach(effect => {
+      const statElement = document.getElementById(effect.stat);
+      if (statElement) {
+        const currentValue = parseInt(statElement.textContent, 10);
+        let value;
+        // 負の値はそのまま
+        if (effect.value < 0) {
+          value = effect.value;
+        } else {
+          // 正の値の場合、statに応じて特別処理
+          if (effect.stat === 'progress') {
+            value = Math.floor(effect.value * ratio * window.gameDataByChar.kennkyuu);
+            console.log("スコア適用倍率: " + ratio + " * " + window.gameDataByChar.kennkyuu);
+          } else if (effect.stat === 'relations') {
+            value = Math.floor(effect.value * ratio * window.gameDataByChar.kannkei);
+            console.log("スコア適用倍率: " + ratio + " * " + window.gameDataByChar.kannkei);
+          } else {
+            value = Math.floor(effect.value * ratio);
+            console.log("スコア適用倍率: " + ratio);
+          }
+        }
+        // 新しい値を反映
+        statElement.textContent = currentValue + value;
+      } else {
+        console.warn(`【重要】"${effect.stat}"が見つかりません:(  game.jsのgameScenariosを見直してください`);
+      }
+    });
+  }
   // 選択肢を非表示にしてテキストを表示
   document.getElementById("game-choice").style.display = "none";
   document.getElementById("gameTextBox").classList.remove("no-display");
   document.getElementById("gameTextBox").classList.add("yes-display");
-  
   // 最初のストーリーテキストを表示
   updateStoryText();
   isSeeingStory = true;
-  
   // モーダルにイベントリスナーを追加
   document.getElementById('modal-game').addEventListener('click', handleModalClick);
 }
@@ -318,7 +428,9 @@ function handleModalClick() {
 function initializeGame() {
   // 初期選択肢の設定
   updateChoices();
-  
+  // 初期人員数に応じた効果の更新
+  const initialCount = parseInt(document.getElementById("personnel-count").textContent, 10);
+  updateEffects(initialCount);
   // 選択肢にイベントリスナーを追加
   document.querySelectorAll(".choice-card").forEach(card => {
     card.addEventListener('click', handleChoiceClick);
@@ -332,10 +444,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// 追加する特別なミドルストーリー処理関数
+// 追加するミドルストーリー
 let middleStoryIndex = 0;
 const middleStoryTexts = [
-  "特別なストーリー1",
+  "なぜか配列の0番目だけ表示されない",
   "特別なストーリー2",
   "特別なストーリー3",
   "特別なストーリー4"
@@ -343,37 +455,35 @@ const middleStoryTexts = [
 
 function showMiddleStory() {
   console.log("中間ストーリー開始");
-  const gameTextElement = document.getElementById('game-text');
+  // ボタンのイベントリスナーを削除
   const button = document.getElementById("game-button-will");
-  
   // ボタンを一旦非表示に
   button.style.display = "none";
-  
-  if (middleStoryIndex < middleStoryTexts.length) {
-    // 次のミドルストーリーテキストを表示
-    gameTextElement.textContent = middleStoryTexts[middleStoryIndex];
-    middleStoryIndex++;
-    
-    // モーダルにイベントリスナーを再追加
-    document.getElementById('modal-game').addEventListener('click', handleMiddleStoryClick);
-  } else {
-    // ミドルストーリーが終わったら通常の進行に戻る
-    resetToChoices();
-    // ミドルストーリーのインデックスをリセット
-    middleStoryIndex = 0;
-  }
-}
-
-// ミドルストーリー用のクリックハンドラ
-function handleMiddleStoryClick() {
   if (middleStoryIndex < middleStoryTexts.length) {
     // 次のミドルストーリーテキストを表示
     const gameTextElement = document.getElementById('game-text');
     gameTextElement.textContent = middleStoryTexts[middleStoryIndex];
     middleStoryIndex++;
+    // モーダルにイベントリスナーを設定
+    document.getElementById('modal-game').addEventListener('click', handleMiddleStoryClick);
   } else {
-    // テキストの最後まで来たらボタンを表示
-    const button = document.getElementById("game-button-will");
+    // ミドルストーリーが終わったら通常の進行に戻る
+    middleStoryIndex = 0;
+    resetToChoices();
+  }
+}
+
+// ミドルストーリー用のクリックハンドラ
+function handleMiddleStoryClick() {
+  const gameTextElement = document.getElementById('game-text');
+  const button = document.getElementById("game-button-will");
+  
+  if (middleStoryIndex < middleStoryTexts.length) {
+    // 次のミドルストーリーテキストを表示
+    gameTextElement.textContent = middleStoryTexts[middleStoryIndex];
+    middleStoryIndex++;
+  } else {
+    // すべてのミドルストーリーテキストを表示したらボタンを表示
     button.textContent = "物語を続ける";
     button.style.display = "flex";
     
@@ -381,6 +491,10 @@ function handleMiddleStoryClick() {
     document.getElementById('modal-game').removeEventListener('click', handleMiddleStoryClick);
     
     // ボタンにイベントリスナーを追加
-    button.addEventListener('click', resetToChoices);
+    button.onclick = function() {
+      // ミドルストーリーのインデックスをリセット
+      middleStoryIndex = 0;
+      resetToChoices();
+    };
   }
 }
