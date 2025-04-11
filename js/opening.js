@@ -218,7 +218,7 @@ const array2to3 = function() {
     currentTextIndex = 0;
     if (currentArray && currentArray.length > 0 && currentArray[currentTextIndex]) {
        // UI更新 (背景、モーダル表示、最初のテキスト)
-      document.querySelector(".opening-background img").src = "./image/rocket.jpg";
+      document.querySelector(".opening-background img").src = "./image/rocket.avif";
       modalOpening.style.display = "block";
       modalOpening.classList.remove("fadeout");
       modalOpening.classList.add("fadein");

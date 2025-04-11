@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="./css/opening.css">
   <link rel="stylesheet" href="./css/select.css">
   <link rel="stylesheet" href="./css/game.css">
+  <link rel="stylesheet" href="./css/ending.css">
   <link rel="icon" href="./image/favicon.ico">
 </head>
 <body>
@@ -26,7 +27,7 @@
       <div id="select-text">国家選択</div>
       <div id="select-GER">
         <div class="select-country-haikei">
-          <img src="./image/news_event_GER_sedan.png">
+          <img src="./image/news_event_GER_sedan.avif">
         </div>
         <h2>大ゲルマン帝国</h2>
         <p>連合国の失策により、第二次世界大戦を勝利で終えたドイツは総統アドルフ・ヒトラーのもと、地球最強の国として君臨している。しかし戦争経済から脱せなかったことによる経済破綻は国を十年以上停滞させ、アーリア人の理想郷のために「劣等人種」を搾取・殺戮する構造はライヒの内側を憎しみで満たした。かつての戦友、日本とイタリアはもはや仲間ではない。我々は冷戦での優位性をつかむために月面基地を作る「プロジェクト・ルナ」へと希望を託した。大丈夫、ドイツの鷲はまだ飛べる。</p>
@@ -182,6 +183,24 @@
     <button id="game-button-will">この文章は表示されません</button>
   </div>
   
+  <div id="modal-ending">
+    <!--誰につく？-->
+    <div class="ending-background">
+      <img src="./image/background.avif">
+    </div>
+    <div class="text-container">
+      <p id="ending-text"></p>
+    </div>
+    <div id="ending-button-container">
+      <button id="endbutton-1" class="no-display ending-button"></button>
+      <button id="endbutton-2" class="no-display ending-button"></button>
+      <button id="endbutton-3" class="no-display ending-button"></button>
+      <button id="endbutton-4" class="no-display ending-button"></button>
+    </div>
+  </div>
+
+  <div id="ENDING_TYPE" class="no-display"></div>
+
   <script src="./js/title.js"></script>
   <script src="./js/opening.js"></script>
   <script src="./js/select.js"></script>

@@ -270,7 +270,7 @@ function updateChoices() {
     
     card.querySelector("h3").textContent = scenario.title;
     card.querySelector("p").textContent = effectDescriptions;
-    card.id = `GER-selestion${index + 1}`;
+    card.id = `selestion${index + 1}`;
   });
 }
 
@@ -335,8 +335,9 @@ function resetToChoices() {
     resourcesElement.textContent = resources;
   } else {
     // ゲーム終了処理
-    console.log("ゲーム終了：ここに終了処理を書いてください");
+    console.log("ゲーム終了");
     document.getElementById("game-choice").style.display = "none";
+    determineEnding();
   }
 }
 
@@ -513,4 +514,66 @@ function handleMiddleStoryClick() {
       resetToChoices();
     };
   }
+}
+
+
+// 中間後で書いといて
+
+
+function determineEnding() {
+  // √分岐system
+  const Relations = Number(document.getElementById("relations").textContent);
+  const Progress = Number(document.getElementById("progress").textContent);
+  const Development = Number(document.getElementById("moon-development").textContent);
+  console.log("最終スコア: " + Relations + "," + Progress + "," + Development);
+  if (Progress >= 100) {
+    // 誰につく？の分岐
+    document.getElementById("ENDING_TYPE").textContent = "TYPE_1";
+    document.getElementById("modal-game2").classList.add("fadeout");
+    setTimeout(() => {
+      document.getElementById("modal-game").style.display = "none";
+      document.getElementById("modal-end").style.display = "block";
+      document.getElementById("modal-end").classList.add("fadein");
+    }, 1000);
+  } else if (Relations >= 100 && Development >= 100 && hasSavedJPN == True) {
+    // 日本と統合（ドイツ優位）
+    document.getElementById("ENDING_TYPE").textContent = "TYPE_2";
+    document.getElementById("modal-game").classList.add("fadeout");
+    setTimeout(() => {
+      document.getElementById("modal-game").style.display = "none";
+      document.getElementById("modal-end").style.display = "block";
+      document.getElementById("modal-end").classList.add("fadein");
+    }, 1000);
+  } else if (Development >= 100) {
+    // 月面帝国
+    document.getElementById("ENDING_TYPE").textContent = "TYPE_3";
+    document.getElementById("modal-game").classList.add("fadeout");
+    setTimeout(() => {
+      document.getElementById("modal-game").style.display = "none";
+      document.getElementById("modal-end").style.display = "block";
+      document.getElementById("modal-end").classList.add("fadein");
+    }, 1000);
+  } else if (Relations >= 100 && hasSavedJPN == True) {
+    // 日本と統合（日本優位）
+    document.getElementById("ENDING_TYPE").textContent = "TYPE_4";
+    document.getElementById("modal-game").classList.add("fadeout");
+    setTimeout(() => {
+      document.getElementById("modal-game").style.display = "none";
+      document.getElementById("modal-end").style.display = "block";
+      document.getElementById("modal-end").classList.add("fadein");
+    }, 1000);
+  } else {
+    determineEndingToBadEnd();
+  }
+}
+
+function determineEndingToBadEnd(){
+  // すべて終わっていないor物資が足りなくなる
+  document.getElementById("ENDING_TYPE").textContent = "BADEND";
+  document.getElementById("modal-game").classList.add("fadeout");
+  setTimeout(() => {
+    document.getElementById("modal-game").style.display = "none";
+    document.getElementById("modal-end").style.display = "block";
+    document.getElementById("modal-end").classList.add("fadein");
+  }, 1000);
 }
