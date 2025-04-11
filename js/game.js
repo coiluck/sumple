@@ -444,14 +444,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// 追加するミドルストーリー
+// 追加する中間イベント
 let middleStoryIndex = 0;
-const middleStoryTexts = [
+const FindStoryTexts = [
+  "なぜか配列の0番目だけ表示されない",
+  "――月面基地 ノルトヴァッヘ",
+  "灰のような静寂が支配するこの銀の牢獄で、夜は地球よりも深く重く降りてくる。",
+  "仄暗い廊下を歩き個室へ戻る途中、格納庫の裏手からかすかな声を聞いた。",
+  "金属板の継ぎ目に響く、掠れた低音。古びた旋律。",
+  "言葉の意味は、わからなかった――だが、歌の痛みだけは感じ取れた。",
+  "耳を澄ますと、それはイディッシュ語だった。忘れ去られた民族の、失われた歌。",
+  "扉の隙間から中を覗くと、一人の男がそこにいた。",
+  "作業服を着て、機械の影に身を潜めるように座り、ボトルを片手に揺れている。",
+  "見た目では分からなかったが、その言葉と旋律がすべてを物語っていた。",
+  "「……ユダヤ人か」",
+  "呟いた声は、自分のものではないように響いた。",
+];
+const IndonesiaStoryTexts = [
   "なぜか配列の0番目だけ表示されない",
   "特別なストーリー2",
   "特別なストーリー3",
   "特別なストーリー4"
 ];
+const middleStoryArray = [FindStoryTexts,IndonesiaStoryTexts]
+const middleStoryArrayIndex = 0;
 
 function showMiddleStory() {
   console.log("中間ストーリー開始");

@@ -1,0 +1,130 @@
+const gameScenarios = [
+  [
+    {
+      title: '酸素生成プラントの不調',
+      effects: [{ stat: 'moon-development', value: -10 }, { stat: 'progress', value: 10 }],
+      stories: [
+        '主力酸素生成プラントで異常値が報告される。',
+        '急遽、研究班が修復作業に入るも、根本原因は不明。',
+        '応急措置は完了したが、問題の再発は避けられないかもしれない。'
+      ],
+      buttonText: "技術の限界を痛感する"
+    },
+    {
+      title: '対日共同演習の打診',
+      effects: [{ stat: 'relations', value: 10 }, { stat: 'moon-development', value: 5 }],
+      stories: [
+        '日本側から「月面共同演習」への参加要請が届く。',
+        '表向きは友好の証、だが軍事的意図は明白だ。',
+        '緊張を抑えるため、参加することに決めた。'
+      ],
+      buttonText: "関係は崩せない"
+    },
+    {
+      title: '採掘ドローンの導入',
+      effects: [{ stat: 'resources', value: 20 }, { stat: 'progress', value: 5 }],
+      stories: [
+        '新型の自動採掘ドローンを導入。',
+        '作業効率が飛躍的に向上するが、制御エラーも頻発。',
+        '修正プログラムの更新により安定稼働に移行した。'
+      ],
+      buttonText: "効率は力だ"
+    }
+  ],
+  [
+    {
+      title: '月面暴風の襲来',
+      effects: [{ stat: 'moon-development', value: -15 }],
+      stories: [
+        '予測不能な塵嵐が基地を襲う。',
+        '外部機器が破損、緊急遮断システムが作動。',
+        '大きな人的被害は免れたが、復旧には時間を要するだろう。'
+      ],
+      buttonText: "自然は敵だ"
+    },
+    {
+      title: '兵站船の墜落',
+      effects: [{ stat: 'resources', value: -25 }, { stat: 'progress', value: -5 }],
+      stories: [
+        '補給船が着陸中に制御不能となり墜落。',
+        '積荷の大半が損壊し、研究資料も消失した。',
+        'この損失は痛い。'
+      ],
+      buttonText: "痛手は避けられなかった"
+    },
+    {
+      title: '月面農業実験成功',
+      effects: [{ stat: 'moon-development', value: 20 }, { stat: 'resources', value: 10 }],
+      stories: [
+        '閉鎖空間での農作実験がついに成功。',
+        '土壌改良と人工光照射の組み合わせにより作物が発芽した。',
+        '自給体制への第一歩が記された。'
+      ],
+      buttonText: "生命はここにも芽吹く"
+    }
+  ],
+  [
+    {
+      title: '暗号通信の漏洩',
+      effects: [{ stat: 'relations', value: -10 }],
+      stories: [
+        '機密通信の一部が外部に漏洩した可能性が浮上。',
+        '日本側のメディアに我々の計画の断片が掲載される。',
+        '関係当局が調査に乗り出したが、影響は避けられない。'
+      ],
+      buttonText: "誰が漏らした？"
+    },
+    {
+      title: '研究班の内部対立',
+      effects: [{ stat: 'progress', value: -10 }],
+      stories: [
+        '複数の主任研究員の意見が真っ向から対立。',
+        '実験方針を巡って口論が続き、進行が停止。',
+        '上層部の介入により一時的に収束するも、火種は消えていない。'
+      ],
+      buttonText: "科学も政治だ"
+    },
+    {
+      title: '大規模電力網の完成',
+      effects: [{ stat: 'moon-development', value: 15 }, { stat: 'progress', value: 5 }],
+      stories: [
+        '新たな原子力発電モジュールが稼働を開始。',
+        '月面基地全体の電力供給が安定し、開発計画が加速する。',
+        'この安定は、多くの犠牲の上に成り立っている。'
+      ],
+      buttonText: "ようやく基盤が整った"
+    }
+  ],
+  [
+    {
+      title: '異常信号の受信',
+      effects: [{ stat: 'progress', value: 10 }],
+      stories: [
+        '深部センサーが不規則な電磁波を検出。',
+        '自然現象として説明できない異常信号だった。',
+        '一部科学者の間で“人工的”という見解が囁かれる。'
+      ],
+      buttonText: "本当に我々だけなのか？"
+    },
+    {
+      title: '帰還希望者の増加',
+      effects: [{ stat: 'moon-development', value: -10 }],
+      stories: [
+        '任期を終えた職員のうち、大半が再配置を拒否。',
+        '精神的・身体的ストレスの蓄積が原因とされる。',
+        '補充要員の確保が急務となった。'
+      ],
+      buttonText: "月は牢獄になりつつある"
+    },
+    {
+      title: '自動補給システム成功',
+      effects: [{ stat: 'resources', value: 20 }],
+      stories: [
+        '自動補給ラインが初の稼働に成功。',
+        '月-地球間の物資循環が飛躍的に向上。',
+        '人的ミスのリスクも削減された。'
+      ],
+      buttonText: "補給線は命綱だ"
+    }
+  ]
+];
