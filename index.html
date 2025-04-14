@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="./css/opening.css">
   <link rel="stylesheet" href="./css/select.css">
   <link rel="stylesheet" href="./css/game.css">
+  <link rel="stylesheet" href="./css/game2.css">
   <link rel="stylesheet" href="./css/ending.css">
   <link rel="icon" href="./image/favicon.ico">
 </head>
@@ -40,6 +41,9 @@
     <!--オープニングストーリー-->
     <div class="opening-background">
       <img src="./image/germania.avif">
+    </div>
+    <div id="opening-character" class="no-display">
+      <img src="./">
     </div>
     <div class="text-container">
       <p id="opening-text">我々は勝利した。</p>
@@ -145,7 +149,7 @@
     <div class="game-screen" id="game-choice">
       <div class="scenario-section">
         <h2 class="scenario-title">月面基地拡張計画</h2>
-        <p class="scenario-description">厳しい月面環境での生存と技術開発が求められる</p>
+        <p class="scenario-description" id="game-description1">我々は追加の補給を選択できるようだ</p>
       </div>
       <div class="choices-section">
         <!--選択肢-->
@@ -178,13 +182,76 @@
     </div>
     <div class="two-button-container">
       <button id="save-Jew">私は何も聞いてない</button>
-      <button id="ignore-Jew">すぐにこいつを送り返せ！</button>
+      <button id="punish-Jew">すぐにこいつを送り返せ！</button>
     </div>
     <button id="game-button-will">この文章は表示されません</button>
   </div>
+
+  <div id="modal-game2">
+    <!--ゲーム画面2-->
+    <div class="game-background">
+      <img src="./image/background.avif">
+    </div>
+    <div class="status-bar">
+      <!--管理する数値-->
+      <div class="status-item">
+        <span class="label">研究進度:</span>
+        <span id="progress2">0</span>
+      </div>
+      <div class="status-item">
+        <span class="label">月面開発:</span>
+        <span id="moon-development2">0</span>
+      </div>
+      <div class="status-item">
+        <span class="label">他国との関係値:</span>
+        <span id="relations2">10</span>
+      </div>
+      <div class="status-item">
+        <span class="label">物資:</span>
+        <span id="resources2">500</span>
+      </div>
+      <div class="status-item">
+        <span class="label">基地の人員:</span>
+        <div class="personnel-control">
+          <button class="personnel-btn" id="personnel-decrease2">-</button>
+          <span id="personnel-count2">50</span>
+          <button class="personnel-btn" id="personnel-increase2">+</button>
+        </div>
+      </div>
+      <div class="status-item">
+        <span class="label">予想消費:</span>
+        <span id="resources-cost2">-450 +500</span>
+      </div>
+    </div>
+    <div class="game-screen" id="game2-choice">
+      <div class="scenario-section">
+        <h2 class="scenario-title">月面基地拡張計画</h2>
+        <p class="scenario-description">月面基地の発展と技術開発が求められる</p>
+      </div>
+      <div class="choices-section">
+        <!--選択肢-->
+        <div id="selestion2-1" class="choice-card2">
+          <h3>サンプル2-1</h3>
+          <p>この文章は表示されませんこの文章は表示されません</p>
+        </div>
+        <div id="selestion2-2" class="choice-card2">
+          <h3>サンプル2-2</h3>
+          <p>この文章は表示されませんこの文章は表示されません</p>
+        </div>
+        <div id="selestion2-3" class="choice-card2">
+          <h3>サンプル2-3</h3>
+          <p>この文章は表示されませんこの文章は表示されません</p> 
+        </div>
+      </div>
+    </div>
+    <div class="gameText-screen no-display" id="gameTextBox2">
+      <p id="game-text2"></p>
+    </div>
+    <button id="game-button-will2">この文章は表示されません</button>
+  </div>
   
   <div id="modal-ending">
-    <!--誰につく？-->
+    <!--エンディング-->
     <div class="ending-background">
       <img src="./image/background.avif">
     </div>
@@ -205,5 +272,6 @@
   <script src="./js/opening.js"></script>
   <script src="./js/select.js"></script>
   <script src="./js/game.js"></script>
+  <script src="./js/game2.js"></script>
 </body>
 </html>

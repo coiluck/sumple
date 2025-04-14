@@ -72,6 +72,30 @@
     opacity: 0;
   }
 }
+.fast-fadein-text { 
+  animation: fastFadeInText .5s;
+  animation-fill-mode: both;
+}
+@keyframes fastFadeInText {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: .7;
+  }
+}
+.fast-fadeout-text { 
+  animation: fastFadeOutText .5s;
+  animation-fill-mode: both;
+}
+@keyframes fastFadeOutText {
+  0% {
+    opacity: .7;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 .no-display {
   display: none !important;
 }

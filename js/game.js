@@ -69,16 +69,17 @@ function UpdateResourcesCost(count) {
   const shouhiCost = Math.floor(200 + count * 5 * window.gameDataByChar.shouhi);
   const hokyuuCost = 500 * window.gameDataByChar.hokyuu;
   costElement.textContent = "-" + shouhiCost + " +" + hokyuuCost;
-  // 獲得スコアを更新
 };
 
 // キャラ選択後に確定したgameDataByCharを使って更新
 document.getElementById("confirm-button").addEventListener("click", function() {
   const count = parseInt(document.getElementById("personnel-count").textContent, 10);
   UpdateResourcesCost(count);
+  updateEffects(count)
 });
 
-// スコア倍率を表示されている選択肢に適用
+
+// 獲得スコアを更新
 function updateEffects(count) {
   const scoreRatio = [1, 1.13, 1.23, 1.31, 1.38, 1.44, 1.5];
   const ratioIndex = Math.floor((count - 30) / 10);
@@ -112,6 +113,9 @@ function updateEffects(count) {
         } else if (effect.stat === 'relations') {
           // relationsの場合はkannkeiをかける
           calculatedValue = Math.floor(effect.value * ratio * window.gameDataByChar.kannkei);
+        } else if(effect.stat === 'resources') {
+          // resourcesの場合は比率適用しない
+          calculatedValue = effect.value;
         } else {
           // その他の正の値
           calculatedValue = Math.floor(effect.value * ratio);
@@ -125,132 +129,191 @@ function updateEffects(count) {
   });
 }
 
-
-// ゲームシナリオデータ
+// ゲームデータ
 const gameScenarios = [
   [
     {
-      title: '月面基地の拡張',
-      effects: [{ stat: 'resources', value: -100 }, { stat: 'development', value: 20 }],
+      title: '実験機材の輸送を優先',
+      effects: [{ stat: 'progress', value: 16 }, { stat: "moon-development", value: -5}],
       stories: [
-        '月面基地の拡張計画が承認された。',
-        '新しい居住区画の建設が始まる。',
-        '資材の調達に苦労したが、予定通り進んでいる。',
-        '最新技術を取り入れた設備が整いつつある。',
-        '拡張工事が完了し、収容人数が2倍になった。'
+        '補給艦の物資積載量に限りがある中、我々は月面に不足していた実験機材を優先的に積み込んだ。',
+        'これは本国からの命令であり、インフラ資材や医療品の多くは次回の便に回された。',
+        '気密区画の整備が遅れ、乗組員の数名が低温障害に見舞われたが、報告は控えられた。'
       ],
-      buttonText: "基地の未来に乾杯"
+      buttonText: '本国からの命令が絶対だ'
     },
     {
-      title: '資源採掘プロジェクト',
-      effects: [{ stat: 'resources', value: 150 }, { stat: 'environment', value: -15 }],
+      title: '生活インフラ資材を輸送',
+      effects: [{ stat: 'moon-development', value: 14 }],
       stories: [
-        '新たな資源採掘地点が発見された。',
-        'ドリル装置の設置が完了した。',
-        '予想以上の資源が確認され、チームは沸き立っている。',
-        '環境への影響を懸念する声も上がっている。',
-        '採掘は成功し、貴重な資源を確保した。'
+        '優先されたのは、気圧調整装置と簡易水再生システムだった。',
+        '基地内の空調が安定し、湿度・温度の管理も精度を増す。',
+        '作業効率が上がり、乗組員の間にもわずかながら安堵が広がった。'
       ],
-      buttonText: "資源は力だ"
+      buttonText: 'まずは人間が生きられる場所を'
     },
     {
-      title: '研究施設の強化',
-      effects: [{ stat: 'research', value: 25 }, { stat: 'resources', value: -50 }],
+      title: '日本基地から物資の譲渡',
+      effects: [{ stat: 'relations', value: 12 }, { stat: "resources", value: 100}],
       stories: [
-        '研究施設の強化計画が提案された。',
-        '最新の実験装置が月面へ運ばれる。',
-        '科学者たちは新たな発見に胸を躍らせている。',
-        '最初の実験結果が届き、期待以上の成果だ。',
-        '研究施設の強化により、様々な技術革新が期待できる。'
+        '大日本帝国の月面基地と通信を繋ぎ、支援の要請を行った。',
+        '物資の譲渡と同時に、両国の基地間での医療支援協定が交わされる。',
+        '帝国内部では「恥辱」とする声もあるが、現場はすでに月の現実と向き合っていた。'
       ],
-      buttonText: "知識こそ最大の武器"
+      buttonText: '協力なくして生存はない'
     }
   ],
   [
     {
-      title: '外交使節団の派遣',
-      effects: [{ stat: 'relations', value: 20 }, { stat: 'resources', value: -30 }],
+      title: '放射線観測施設を構築',
+      effects: [{ stat: 'progress', value: 12 }],
       stories: [
-        '他の月面基地との外交関係を強化するため、使節団の派遣を決定した。',
-        '慎重に選ばれた外交官たちが出発の準備を整えている。',
-        '最初の会談は緊張した雰囲気の中で始まった。',
-        '徐々に信頼関係が築かれ、協力の可能性が見えてきた。',
-        '使節団の活動は成功し、複数の協定が結ばれた。'
+        '月面実験を強く望む本国の要請を受け、我々は月面に実験施設を建設した。',
+        '月面の放射線データは、核反応機構の理論に新たな仮説をもたらした。',
+        '地球上での実験では得られなかった精度に研究者らは喜ぶ。'
       ],
-      buttonText: "友好は未来への架け橋"
+      buttonText: "放射線実験はいつか役に立つだろう"
     },
     {
-      title: '防衛システムの強化',
-      effects: [{ stat: 'security', value: 30 }, { stat: 'relations', value: -10 }],
+      title: '補給船停泊所の整備',
+      effects: [{ stat: "moon-development", value: 5}, { stat: 'resources', value: 50 }],
       stories: [
-        '増加する脅威に対抗するため、防衛システムの強化が提案された。',
-        '新型センサーと防御兵器の設置が始まる。',
-        '周辺基地からは懸念の声が上がっている。',
-        'テスト発射が成功し、システムの有効性が確認された。',
-        '基地の安全は確保されたが、緊張が高まったことも事実だ。'
+        'これから何度も訪れるであろう補給線のため、月面着陸地点に半永久的な停泊所を整備することにした。',
+        "粉塵舞い上がる地表に、初めて「繰り返し使う」ことを前提とした構造物が建つ。",
+        "赤黒い粉塵の地に無言の鋼鉄の杭が沈み、帝国の旗がはためく。",
+        '溶接の火花が夜空に散り、鉄の支柱が「定着」の意思を突き立てる――この月は、ただの観測地ではない。これは、領土だ。'
       ],
-      buttonText: "安全には代償がつきものだ"
+      buttonText: 'ここが新たな補給線の起点となる'
     },
     {
-      title: '医療技術の革新',
-      effects: [{ stat: 'health', value: 25 }, { stat: 'research', value: 15 }],
+      title: '生活棟の拡張工事',
+      effects: [{ stat: 'moon-development', value: 15 }],
       stories: [
-        '宇宙環境特有の健康問題に対処するため、新たな医療研究が始まった。',
-        '実験段階の治療法が開発され、テストが行われている。',
-        '初期の結果は有望で、さらなる研究資金が投入された。',
-        '画期的な医療機器が完成し、治療効果が劇的に向上した。',
-        'この技術革新により、長期的な月面居住の実現可能性が高まった。'
+        '我々は狭苦しい宇宙船にお別れする計画に取り掛かった。',
+        '居住スペースの拡張によってより快適な月面生活を送れるだろう。',
+        '人間の長期滞在を可能にする設計だ。'
       ],
-      buttonText: "健康な体に健全な精神あり"
+      buttonText: "居住第一！"
     }
   ],
   [
     {
-      title: '宇宙農業の拡大',
-      effects: [{ stat: 'resources', value: 100 }, { stat: 'health', value: 10 }],
+      title: 'クレーター内部を調査',
+      effects: [{ stat: 'progress', value: 12 }],
       stories: [
-        '食料自給率を上げるため、宇宙農業施設の拡大が決定した。',
-        '新しい水耕栽培システムが導入され、生産効率が向上した。',
-        '品種改良された作物が月面環境で育ち始めている。',
-        '最初の収穫祭が行われ、住民たちの士気が上がった。',
-        '食料供給が安定し、基地の持続可能性が大きく向上した。'
+        'ヴァルキューレⅡの着陸時に見たクレーターを目指し、探索が行われた。',
+        "クレーター内部に露出していた鉱石成分を採取・分析する。",
+        'ウラン系列に類似する未知の鉱物が発見され、月面資源の戦略的価値が再評価されることとなった。',
+        '本国は即座に追加の採取・解析命令を発し、緊張が走った。'
       ],
-      buttonText: "実りある未来へ"
+      buttonText: "この発見がすべてを変えるかもしれない"
     },
     {
-      title: '文化交流イベント',
-      effects: [{ stat: 'morale', value: 25 }, { stat: 'relations', value: 15 }],
+      title: '日本の無人機に接近',
+      effects: [{ stat: 'progress', value: 20 }, { stat: "relations", value: -10}],
       stories: [
-        '異なる国籍の住民間の結束を強めるため、文化交流イベントが企画された。',
-        '音楽、料理、芸術を通じた交流が盛んに行われている。',
-        '思いがけない友情が生まれ、基地内の雰囲気が明るくなった。',
-        '他の月面基地からの参加者も増え、交流の輪が広がっている。',
-        'イベントは大成功を収め、定期的な開催が決まった。'
+        'かの国では我々と同じように無人機による月面探査を行っている。',
+        '我々は日本の無人機に「偶然」接近し、詳細な観察を行った。',
+        '技術的優位を確認した本国は満足したが、大日本帝国は苛立ちを隠せない。',
+        "抗議が届いたのは3日後。だが、すでに解析は完了していた。"
       ],
-      buttonText: "多様性は力なり"
+      buttonText: "行動の先に、成果がある"
     },
     {
-      title: 'エネルギー革命',
-      effects: [{ stat: 'technology', value: 30 }, { stat: 'environment', value: 20 }],
+      title: '基地周辺の地形を検証',
+      effects: [{ stat: 'moon-development', value: 18 }],
       stories: [
-        '新型エネルギー源の開発プロジェクトが始動した。',
-        '試作機の稼働テストが行われ、高い効率性が確認された。',
-        '従来のシステムからの移行作業が着々と進んでいる。',
-        '環境負荷の大幅な削減と同時に、出力も向上した。',
-        '他の月面基地からも技術提供の要請が来るほどの成功を収めた。'
+        '基地周辺半径5kmの地形調査を実施し、構造物設置可能区域をマッピングする。',
+        '月面特有の地質パターンが把握され、建築可能エリアの安全マップが作成される',
+        'これは始まりだ――帝国都市の礎となる地を選定するための、第一歩。'
       ],
-      buttonText: "未来のエネルギーを手に入れた"
+      buttonText: "この地に「都市」を築く"
+    }
+  ],
+  [
+    {
+      title: '',
+      effects: [{ stat: '', value: 12 }],
+      stories: [
+        '',
+        "",
+        '',
+        ''
+      ],
+      buttonText: ""
+    },
+    {
+      title: '',
+      effects: [{ stat: '', value: 20 }, { stat: "", value: -10}],
+      stories: [
+        '',
+        '',
+        '',
+        ""
+      ],
+      buttonText: ""
+    },
+    {
+      title: '',
+      effects: [{ stat: '', value: 18 }],
+      stories: [
+        '',
+        '',
+        ''
+      ],
+      buttonText: ""
+    }
+  ],
+  [
+    {
+      title: '技術成果を前面に出す',
+      effects: [{ stat: 'resources', value: 200 }, { stat: "progress", value: 5 }],
+      stories: [
+        '通信室の照明が落とされ、静かに記録映像が流れ始める。',
+        "機械式アームの試運転、放射線遮蔽シェルの実験結果、月面で採取された鉱物成分。",
+        '本国は我々の月面での成果に満足したようだった。'
+      ],
+      buttonText: "報告は以上だ"
+    },
+    {
+      title: 'そんなことより研究だ',
+      effects: [{ stat: 'progress', value: 20 }],
+      stories: [
+        '月面での成果に夢中になっていた我々には、本国すらも水を差せないようだった',
+        '報告は後回しにして研究者らは日夜実験を続ける。',
+        "我々にとって通信は義務ではない――任務の進行こそが忠誠の証だった。"
+      ],
+      buttonText: "我々は報告のために月に来たのではない"
+    },
+    {
+      title: '基地と周辺を紹介',
+      effects: [{ stat: 'resources', value: 200 }, { stat: "moon-development", value: 5 }],
+      stories: [
+        'カメラは無音のまま、気圧調整室を抜け、月面を滑るように進んでいく。',
+        '静寂に包まれた外壁、白く凍った装甲、わずかに灯る作業灯。',
+        '本国は我々が月面に築いた壮大な基地に満足したようだった。'
+      ],
+      buttonText: "報告は以上だ"
     }
   ]
 ];
+// scenario-description用のテキストを用意するのとかおしゃれかも
+// 全部出来上がってからにしてください
+// すぐできるしやっちゃった～:)
+const scenarioDescriptionArray = [
+  "我々は追加の補給を選択できるようだ",
+  "月面に最初に建設すべき施設はどれだろうか",
+  "月面の探索が行われる",
+  "隊員たちに初めての月面任務を与える時が来た",
+  "月面から本国へ映像・音声信号が発信される予定だ"
+]
 
-// グローバル変数
 let currentRound = 0;
 let currentScenarioIndex = 0;
 let currentStoryIndex = 0;
 let isSeeingStory = false;
 
-// 選択肢を更新する関数
+// 選択肢を更新
 function updateChoices() {
   const choiceCards = document.querySelectorAll(".choice-card");
   choiceCards.forEach((card, index) => {
@@ -264,8 +327,7 @@ function updateChoices() {
         case 'moon-development': statName = '月面開発'; break;
         default: statName = '不明';
       }
-      const sign = effect.value > 0 ? "+" : ""; // 負の場合は+を付けない
-      return `${statName}: ${sign}${effect.value}`;
+      return `${statName}: +${effect.value}`;
     }).join(', ');
     
     card.querySelector("h3").textContent = scenario.title;
@@ -274,154 +336,149 @@ function updateChoices() {
   });
 }
 
-
-// ストーリーテキストを更新する関数
+// ストーリーテキストを更新
 function updateStoryText() {
   const currentScenario = gameScenarios[currentRound][currentScenarioIndex];
-  const gameTextElement = document.getElementById('game-text');
-  
+  const gameTextElement = document.getElementById('game-text');  
   if (currentStoryIndex < currentScenario.stories.length) {
     gameTextElement.textContent = currentScenario.stories[currentStoryIndex];
     currentStoryIndex++;
-  } else if (currentRound === 1) { // 2ラウンド目の終了時に中間ストーリーへ
-    console.log("中間ストーリーに移行します");
-    // ストーリーの最後ならボタンを表示（ただし特別な関数を設定）
-    const button = document.getElementById("game-button-will");
-    button.textContent = currentScenario.buttonText;
-    button.style.display = "flex";
-    
-    // モーダルのイベントリスナーを削除
-    document.getElementById('modal-game').removeEventListener('click', handleModalClick);
-    
-    // ボタンに特別なイベントリスナーを追加
-    button.onclick = showMiddleStory(); // この部分を変更
   } else {
     // ストーリーの最後ならボタンを表示
-    const button = document.getElementById("game-button-will");
-    button.textContent = currentScenario.buttonText;
-    button.style.display = "flex";
-    
-    // モーダルのイベントリスナーを削除
-    document.getElementById('modal-game').removeEventListener('click', handleModalClick);
-    
-    // ボタンにイベントリスナーを追加
-    button.onclick = resetToChoices; // この部分を変更
+    document.getElementById("game-button-will").style.display = "flex";
+    document.getElementById("game-button-will").classList.add("fast-fadein");
   }
 }
 
-// 選択肢画面に戻る関数
+document.getElementById("game-button-will").addEventListener("click", resetToChoices);
+
+// 選択肢画面に戻る
 function resetToChoices() {
-  // 既存のイベントリスナーを削除
-  const button = document.getElementById("game-button-will");
-  button.onclick = null;
-  
   currentRound++;
   currentStoryIndex = 0;
   isSeeingStory = false;
-
-  button.style.display = "none";
-  document.getElementById("gameTextBox").classList.remove("yes-display");
+  document.getElementById("game-button-will").style.display = "none";
   document.getElementById("gameTextBox").classList.add("no-display");
-  document.getElementById("game-choice").style.display = "block";
-  
-  // 新しい選択肢を表示（まだラウンドがある場合）
+  document.getElementById("gameTextBox").classList.remove("yes-display");  
+  document.querySelector(".game-screen").classList.remove("no-display", "fast-fadeout");
+  document.querySelector(".game-screen").classList.add("fast-fadein");
+  // 新しい選択肢
   if (currentRound < gameScenarios.length) {
     updateChoices();
+    updateEffects(Number(document.getElementById('personnel-count').textContent));
+    document.getElementById("game-description1").textContent = scenarioDescriptionArray[currentRound];
     console.log("ゲーム選択肢を更新しました");
-    // 物資を補充
+    // 物資を補充(ここに書けば初手で実行されないな)
     const resourcesElement = document.getElementById("resources");
     let resources = parseInt(resourcesElement.textContent, 10);
     resources += 500 * window.gameDataByChar.hokyuu;
     resourcesElement.textContent = resources;
+    console.log("補給適用倍率: 500 * " + window.gameDataByChar.hokyuu);
   } else {
-    // ゲーム終了処理
-    console.log("ゲーム終了");
-    document.getElementById("game-choice").style.display = "none";
-    determineEnding();
+    // ゲーム終了処理（後で関数書いて入れておく）
+    document.querySelector(".game-screen").classList.remove("fast-fadein");
+    document.querySelector(".game-screen").classList.add("no-display");
+    document.getElementById("gameTextBox").classList.remove("yes-display", "fast-fadein-text");
+    document.getElementById("gameTextBox").classList.add("no-display");
+    setTimeout(function () {
+      document.getElementById("gameTextBox").classList.remove("no-display");
+      document.getElementById("gameTextBox").classList.add("yes-display");
+      document.getElementById("gameTextBox").classList.add("fast-fadein-text");
+      // 終わったら...
+      displayFindJewStory();
+    }, 500);
   }
 }
 
-// 選択肢クリック時の処理
+// 選択肢クリック時
 function handleChoiceClick(event) {
+  event.stopPropagation();
   if (isSeeingStory) return;
-  // 物資の減少
+  isSeeingStory = true;
+  // 物資を減少
   const personnelCount = parseInt(document.getElementById("personnel-count").textContent, 10);
   const resourcesElement = document.getElementById("resources");
   let resources = parseInt(resourcesElement.textContent, 10);
-  const resourceCost = Math.floor(200 + personnelCount * 5 * window.gameDataByChar.shouhi);
+  const resourceCost = 200 + personnelCount * 5 * window.gameDataByChar.shouhi;
   resources -= resourceCost;
   resourcesElement.textContent = resources;
-  // 物資が0未満になった場合
-  if (resources < 0) {
-    console.log("失敗しました - 物資管理");
-    determineEndingToBadEnd();
-  }
-  // 選択肢の効果を反映
-  // クリックされた選択肢カードに対応するシナリオのインデックスを取得
-  let selectedScenarioIndex = -1;
+  console.log("消費適用倍率: 200 + " + personnelCount + " * 5 * " + window.gameDataByChar.shouhi);
+  // クリックされた選択肢カードを特定し、対応するシナリオのインデックスを取得
   const choiceCards = document.querySelectorAll(".choice-card");
   choiceCards.forEach((card, index) => {
     if (card === event.currentTarget) {
-      selectedScenarioIndex = index;
       currentScenarioIndex = index;
-      // 選択した効果をログに表示
-      console.log("今から適用します - ", gameScenarios[currentRound][index].effects);
+      // ボタンテキストを取得して書き換え
+      const buttonText = gameScenarios[currentRound][index].buttonText;
+      if (buttonText) {
+        document.getElementById("game-button-will").textContent = buttonText;
+      }
     }
   });
-  // 選択した効果を反映
-  if (selectedScenarioIndex !== -1) {
-    const selectedScenario = gameScenarios[currentRound][selectedScenarioIndex];
-    const effects = selectedScenario.effects;
-    // 人員数に基づく倍率を計算
-    const count = personnelCount;
-    const scoreRatio = [1, 1.13, 1.23, 1.31, 1.38, 1.44, 1.5];
-    const ratioIndex = Math.floor((count - 30) / 10);
-    const safeIndex = Math.max(0, Math.min(ratioIndex, scoreRatio.length - 1));
-    const ratio = scoreRatio[safeIndex];
-    // 各効果を反映
-    effects.forEach(effect => {
-      const statElement = document.getElementById(effect.stat);
-      if (statElement) {
-        const currentValue = parseInt(statElement.textContent, 10);
-        let value;
-        // 負の値はそのまま
-        if (effect.value < 0) {
-          value = effect.value;
-        } else {
-          // 正の値の場合、statに応じて特別処理
-          if (effect.stat === 'progress') {
-            value = Math.floor(effect.value * ratio * window.gameDataByChar.kennkyuu);
-            console.log("スコア適用倍率: " + ratio + " * " + window.gameDataByChar.kennkyuu);
-          } else if (effect.stat === 'relations') {
-            value = Math.floor(effect.value * ratio * window.gameDataByChar.kannkei);
-            console.log("スコア適用倍率: " + ratio + " * " + window.gameDataByChar.kannkei);
-          } else {
-            value = Math.floor(effect.value * ratio);
-            console.log("スコア適用倍率: " + ratio);
-          }
-        }
-        // 新しい値を反映
-        statElement.textContent = currentValue + value;
-      } else {
-        console.warn(`【重要】"${effect.stat}"が見つかりません:(  game.jsのgameScenariosを見直してください`);
-      }
-    });
-  }
-  // 選択肢を非表示にしてテキストを表示
-  document.getElementById("game-choice").style.display = "none";
-  document.getElementById("gameTextBox").classList.remove("no-display");
-  document.getElementById("gameTextBox").classList.add("yes-display");
-  // 最初のストーリーテキストを表示
-  updateStoryText();
-  isSeeingStory = true;
-  // モーダルにイベントリスナーを追加
-  document.getElementById('modal-game').addEventListener('click', handleModalClick);
+  // ステータスの更新を追加
+  const selectedScenario = gameScenarios[currentRound][currentScenarioIndex];
+  updateStatus(selectedScenario.effects, personnelCount);
+  // 選択肢を消してテキストを表示
+  document.querySelector(".game-screen").classList.add("fast-fadeout");  
+  setTimeout(function(){ 
+    document.querySelector(".game-screen").classList.add("no-display"); 
+    document.getElementById("gameTextBox").classList.remove("no-display"); 
+    document.getElementById("gameTextBox").classList.add("yes-display"); 
+    document.getElementById("gameTextBox").classList.add("fast-fadein-text");     
+    // 最初のストーリーテキストを表示
+    updateStoryText();
+  }, 500);
 }
 
-// モーダルクリック時の処理
+// ステータスを更新する関数を追加
+function updateStatus(effects, personnelCount) {
+  // 人員により倍率適用
+  const scoreRatio = [1, 1.13, 1.23, 1.31, 1.38, 1.44, 1.5];
+  const ratioIndex = Math.floor((personnelCount - 30) / 10);
+  // 範囲内に収める（0未満は0、配列長以上は最大値）
+  const safeIndex = Math.max(0, Math.min(ratioIndex, scoreRatio.length - 1));
+  const ratio = scoreRatio[safeIndex];
+
+  effects.forEach(effect => {
+    const statElement = document.getElementById(`${effect.stat}`);
+    const currentValue = parseInt(statElement.textContent, 10);
+    let value = effect.value;
+    // value が負の値でない場合のみratioを適用
+    if (value >= 0) {
+      value *= ratio;
+    }
+    // 倍率適用
+    if (effect.stat === 'progress' && value >= 0) { 
+      value *= window.gameDataByChar.kennkyuu;
+      console.log("スコア適用倍率 (progress): " + ratio + " * " + window.gameDataByChar.kennkyuu);
+    } else if (effect.stat === 'relations' && value >= 0) {
+      value *= window.gameDataByChar.kannkei;
+      console.log("スコア適用倍率 (relations): " + ratio + " * " + window.gameDataByChar.kannkei);
+    } else if(effect.stat === 'resources') {
+      // resourcesの場合は比率適用しない
+      value = effect.value;
+      console.log("スコア適用倍率 (relations): 1" )
+    } else if (value >= 0) {
+      console.log("スコア適用倍率 (other): " + ratio);
+    }
+    // 加算する前に変動値を切り捨てる
+    const calculatedValue = Math.floor(value);
+    // 負の値の場合はそのまま加算
+    statElement.textContent = currentValue + calculatedValue;
+  });
+}
+
+// ストーリー読むとき
 function handleModalClick() {
+  // isSeeingStoryがtrueの場合連続クリックを防ぐ
   if (isSeeingStory) {
+    // 一時的に無効化
+    document.getElementById('modal-game').removeEventListener('click', handleModalClick);
     updateStoryText();
+    // 少し遅延を置く
+    setTimeout(() => {
+      document.getElementById('modal-game').addEventListener('click', handleModalClick);
+    }, 100);
   }
 }
 
@@ -429,151 +486,246 @@ function handleModalClick() {
 function initializeGame() {
   // 初期選択肢の設定
   updateChoices();
-  // 初期人員数に応じた効果の更新
-  const initialCount = parseInt(document.getElementById("personnel-count").textContent, 10);
-  updateEffects(initialCount);
   // 選択肢にイベントリスナーを追加
-  document.querySelectorAll(".choice-card").forEach(card => {
+  document.querySelectorAll(".choice-card").forEach(card => { 
     card.addEventListener('click', handleChoiceClick);
   });
+  // モーダルにイベントリスナーを追加
+  document.getElementById('modal-game').addEventListener('click', handleModalClick);
 }
 
 // ゲーム初期化
-document.addEventListener('DOMContentLoaded', function() {
-  initializeGame();
+initializeGame();
+
+// イベントリスナーの重複登録を防ぐためのフラグ管理
+const gameState = {
+  isStoryInProgress: false,
+  currentStoryPhase: 'initial', // 'initial', 'jewStory', 'middleStory'
+  storyListeners: new Set()
+};
+
+// ストーリーリスナーの管理
+function addStoryListener(element, listener) {
+  if (!gameState.storyListeners.has(listener)) {
+    element.addEventListener('click', listener);
+    gameState.storyListeners.add(listener);
+  }
+}
+
+function removeStoryListener(element, listener) {
+  if (gameState.storyListeners.has(listener)) {
+    element.removeEventListener('click', listener);
+    gameState.storyListeners.delete(listener);
+  }
+}
+
+// ユダヤ人イベント
+function displayFindJewStory() {
+  if (gameState.currentStoryPhase !== 'initial') return;
+  
+  gameState.currentStoryPhase = 'jewStory';
+  gameState.isStoryInProgress = true;
+  
+  const textElement = document.getElementById('game-text');
+  const modalElement = document.getElementById('modal-game');
+  const buttonContainer = document.querySelector(".two-button-container");
+  
+  const JewStory1 = [
+    "――月面基地 ノルトヴァッヘ",
+    "灰のような静寂が支配するこの銀の牢獄で、夜は地球よりも深く重く降りてくる。",
+    "仄暗い廊下を歩き個室へ戻る途中、格納庫の裏手からかすかな声を聞いた。",
+    "金属板の継ぎ目に響く、掠れた低音。古びた旋律。",
+    "言葉の意味は、わからなかった――だが、歌の痛みだけは感じ取れた。",
+    "耳を澄ますと、それはイディッシュ語だった。忘れ去られた民族の、失われた歌。",
+    "扉の隙間から中を覗くと、一人の男がそこにいた。",
+    "作業服を着て、機械の影に身を潜めるように座り、ボトルを片手に揺れている。",
+    "見た目では分からなかったが、その言葉と旋律がすべてを物語っていた。",
+    "「……ユダヤ人か」",
+    "呟いた声は、自分のものではないように響いた。",
+    "男は黙って振り向いた。",
+    "部屋に静寂が落ちた。",
+    "あの男を報告し、本国に送るべきか？ それとも、何も見なかったふりをするべきか？",
+    "彼の身柄を本国に差し出せばある程度の報酬が見込めるが、彼がどうなるかは分からない"
+  ];
+  
+  let storyIndex = 0;
+  textElement.textContent = JewStory1[storyIndex];
+
+  const storyClickHandler = () => {
+    if (!gameState.isStoryInProgress) return;
+    
+    storyIndex++;
+    if (storyIndex < JewStory1.length) {
+      textElement.textContent = JewStory1[storyIndex];
+    } else {
+      removeStoryListener(modalElement, storyClickHandler);
+      buttonContainer.style.display = "flex";
+    }
+  };
+
+  addStoryListener(modalElement, storyClickHandler);
+}
+
+// // 選択肢 - 上
+function displaySaveJewStory() {
+  const textElement = document.getElementById('game-text');
+  const modalElement = document.getElementById('modal-game');
+  
+  gameState.isStoryInProgress = true;
+  const saveJewStory = [
+    "私は一歩踏み出しかけて、やめた。",
+    "そして静かに背を向けた。",
+    "ここには音声ログも監視カメラもない。",
+    "誰もこの瞬間を知らない。記録されることも、裁かれることもない。", 
+    "「気を付けたまえ。……非・ドイツ民族的な文化は処罰対象だ。ほかのメンバーに見つかるんじゃないぞ」",
+    "そういって歩き出す。",
+    "男は何も言わずに私の背を見つめていた。",
+    "それきり歌声は聞こえなかった。"
+  ];
+  
+  let storyIndex = 0;
+  textElement.textContent = saveJewStory[storyIndex];
+
+  const saveJewClickHandler = () => {
+    if (!gameState.isStoryInProgress) return;
+    
+    storyIndex++;
+    if (storyIndex < saveJewStory.length) {
+      textElement.textContent = saveJewStory[storyIndex];
+    } else {
+      removeStoryListener(modalElement, saveJewClickHandler);
+      gameState.currentStoryPhase = 'middleStory';
+      document.getElementById('gameTextBox').classList.add("fast-fadeout-text");
+      setTimeout(() => {
+        document.getElementById('gameTextBox').classList.remove("fast-fadeout-text");
+        document.getElementById('gameTextBox').classList.add("fast-fadein-text");
+        displayMiddleStory();
+      }, 500);
+    }
+  };
+
+  addStoryListener(modalElement, saveJewClickHandler);
+}
+
+// 選択肢 - 下
+function displayPunishJewStory() {
+  const textElement = document.getElementById('game-text');
+  const modalElement = document.getElementById('modal-game');
+  
+  gameState.isStoryInProgress = true;
+  const punishJewStory = [
+    "私は何も言わずに男の部屋を立ち去り、廊下を急ぎ気味に歩いた。",
+    "部屋に戻るとすぐに無言で通信端末を開く。",
+    "報告は簡潔だった。",
+    "数日後、本国からのシャトルが彼を連れ帰った。",
+    "報酬として物資 200を手に入れたが、基地にあの歌声はもう戻らなかった。"
+  ];
+  let storyIndex = 0;
+  textElement.textContent = punishJewStory[storyIndex];
+
+  const punishJewClickHandler = () => {
+    if (!gameState.isStoryInProgress) return;
+    
+    storyIndex++;
+    if (storyIndex === 2) {
+      document.getElementById("resources").textContent = Number(document.getElementById("resources").textContent) + 200;
+    }
+    if (storyIndex < punishJewStory.length) {
+      textElement.textContent = punishJewStory[storyIndex];
+    } else {
+      removeStoryListener(modalElement, punishJewClickHandler);
+      gameState.currentStoryPhase = 'middleStory';
+      document.getElementById('gameTextBox').classList.add("fast-fadeout-text");
+      setTimeout(() => {
+        document.getElementById('gameTextBox').classList.remove("fast-fadeout-text");
+        document.getElementById('gameTextBox').classList.add("fast-fadein-text");
+        displayMiddleStory();
+      }, 500);
+    }
+  };
+
+  addStoryListener(modalElement, punishJewClickHandler);
+}
+
+// ボタンイベントリスナー
+document.getElementById('save-Jew').addEventListener('click', function() {
+  const buttonContainer = document.querySelector(".two-button-container");
+  buttonContainer.classList.add("fast-fadeout");
+  setTimeout(() => {
+    buttonContainer.style.display = "none";
+    gameState.isStoryInProgress = false;
+    displaySaveJewStory();
+  }, 1000);
 });
 
-
-
-// 追加する中間イベント
-let middleStoryIndex = 0;
-const FindStoryTexts = [
-  "なぜか配列の0番目だけ表示されない",
-  "――月面基地 ノルトヴァッヘ",
-  "灰のような静寂が支配するこの銀の牢獄で、夜は地球よりも深く重く降りてくる。",
-  "仄暗い廊下を歩き個室へ戻る途中、格納庫の裏手からかすかな声を聞いた。",
-  "金属板の継ぎ目に響く、掠れた低音。古びた旋律。",
-  "言葉の意味は、わからなかった――だが、歌の痛みだけは感じ取れた。",
-  "耳を澄ますと、それはイディッシュ語だった。忘れ去られた民族の、失われた歌。",
-  "扉の隙間から中を覗くと、一人の男がそこにいた。",
-  "作業服を着て、機械の影に身を潜めるように座り、ボトルを片手に揺れている。",
-  "見た目では分からなかったが、その言葉と旋律がすべてを物語っていた。",
-  "「……ユダヤ人か」",
-  "呟いた声は、自分のものではないように響いた。",
-];
-const IndonesiaStoryTexts = [
-  "なぜか配列の0番目だけ表示されない",
-  "特別なストーリー2",
-  "特別なストーリー3",
-  "特別なストーリー4"
-];
-const middleStoryArray = [FindStoryTexts,IndonesiaStoryTexts]
-const middleStoryArrayIndex = 0;
-
-function showMiddleStory() {
-  console.log("中間ストーリー開始");
-  // ボタンのイベントリスナーを削除
-  const button = document.getElementById("game-button-will");
-  // ボタンを一旦非表示に
-  button.style.display = "none";
-  if (middleStoryIndex < middleStoryTexts.length) {
-    // 次のミドルストーリーテキストを表示
-    const gameTextElement = document.getElementById('game-text');
-    gameTextElement.textContent = middleStoryTexts[middleStoryIndex];
-    middleStoryIndex++;
-    // モーダルにイベントリスナーを設定
-    document.getElementById('modal-game').addEventListener('click', handleMiddleStoryClick);
-  } else {
-    // ミドルストーリーが終わったら通常の進行に戻る
-    middleStoryIndex = 0;
-    resetToChoices();
-  }
-}
-
-// ミドルストーリー用のクリックハンドラ
-function handleMiddleStoryClick() {
-  const gameTextElement = document.getElementById('game-text');
-  const button = document.getElementById("game-button-will");
-  
-  if (middleStoryIndex < middleStoryTexts.length) {
-    // 次のミドルストーリーテキストを表示
-    gameTextElement.textContent = middleStoryTexts[middleStoryIndex];
-    middleStoryIndex++;
-  } else {
-    // すべてのミドルストーリーテキストを表示したらボタンを表示
-    button.textContent = "物語を続ける";
-    button.style.display = "flex";
-    
-    // モーダルのイベントリスナーを削除
-    document.getElementById('modal-game').removeEventListener('click', handleMiddleStoryClick);
-    
-    // ボタンにイベントリスナーを追加
-    button.onclick = function() {
-      // ミドルストーリーのインデックスをリセット
-      middleStoryIndex = 0;
-      resetToChoices();
-    };
-  }
-}
-
-
-// 中間後で書いといて
-
-
-function determineEnding() {
-  // √分岐system
-  const Relations = Number(document.getElementById("relations").textContent);
-  const Progress = Number(document.getElementById("progress").textContent);
-  const Development = Number(document.getElementById("moon-development").textContent);
-  console.log("最終スコア: " + Relations + "," + Progress + "," + Development);
-  if (Progress >= 100) {
-    // 誰につく？の分岐
-    document.getElementById("ENDING_TYPE").textContent = "TYPE_1";
-    document.getElementById("modal-game2").classList.add("fadeout");
-    setTimeout(() => {
-      document.getElementById("modal-game").style.display = "none";
-      document.getElementById("modal-end").style.display = "block";
-      document.getElementById("modal-end").classList.add("fadein");
-    }, 1000);
-  } else if (Relations >= 100 && Development >= 100 && hasSavedJPN == True) {
-    // 日本と統合（ドイツ優位）
-    document.getElementById("ENDING_TYPE").textContent = "TYPE_2";
-    document.getElementById("modal-game").classList.add("fadeout");
-    setTimeout(() => {
-      document.getElementById("modal-game").style.display = "none";
-      document.getElementById("modal-end").style.display = "block";
-      document.getElementById("modal-end").classList.add("fadein");
-    }, 1000);
-  } else if (Development >= 100) {
-    // 月面帝国
-    document.getElementById("ENDING_TYPE").textContent = "TYPE_3";
-    document.getElementById("modal-game").classList.add("fadeout");
-    setTimeout(() => {
-      document.getElementById("modal-game").style.display = "none";
-      document.getElementById("modal-end").style.display = "block";
-      document.getElementById("modal-end").classList.add("fadein");
-    }, 1000);
-  } else if (Relations >= 100 && hasSavedJPN == True) {
-    // 日本と統合（日本優位）
-    document.getElementById("ENDING_TYPE").textContent = "TYPE_4";
-    document.getElementById("modal-game").classList.add("fadeout");
-    setTimeout(() => {
-      document.getElementById("modal-game").style.display = "none";
-      document.getElementById("modal-end").style.display = "block";
-      document.getElementById("modal-end").classList.add("fadein");
-    }, 1000);
-  } else {
-    determineEndingToBadEnd();
-  }
-}
-
-function determineEndingToBadEnd(){
-  // すべて終わっていないor物資が足りなくなる
-  document.getElementById("ENDING_TYPE").textContent = "BADEND";
-  document.getElementById("modal-game").classList.add("fadeout");
+document.getElementById('punish-Jew').addEventListener('click', function() {
+  const buttonContainer = document.querySelector(".two-button-container");
+  buttonContainer.classList.add("fast-fadeout");
   setTimeout(() => {
-    document.getElementById("modal-game").style.display = "none";
-    document.getElementById("modal-end").style.display = "block";
-    document.getElementById("modal-end").classList.add("fadein");
+    buttonContainer.style.display = "none";
+    gameState.isStoryInProgress = false;
+    displayPunishJewStory();
   }, 1000);
+});
+
+// 中間ストーリー
+function displayMiddleStory() {
+  if (gameState.currentStoryPhase !== 'middleStory') return;
+  
+  const textElement = document.getElementById('game-text');
+  const modalElement = document.getElementById('modal-game');
+  
+  const storySequence = [
+    "静かな通信室に音がなった。",
+    "本国からの暗号化通信だ。",
+    "モニターに目をやると、表示されたのは「南東アジア状況報告」の見出しだった。",
+    ">インドネシアで大規模な反乱が勃発",
+    ">日本軍の現地統治に対する武装蜂起が発生",
+    "「また新たな火種か……」",
+    "以前から東アジア情勢はきな臭かったが、ずいぶんと悪化したようだった。",
+    "フィリピンの内戦が終わる気配はなく、そして今度はインドネシアか。",
+    "あの地域の安定はどこに行ったんだ。",
+    "静かな月の裏側で、地球の火はゆっくりと広がっている。",
+    "白と黒の世界の中に、赤い光が滲みはじめていた。"
+  ];
+  
+  let storyIndex = 0;
+  textElement.textContent = storySequence[storyIndex];
+
+  const middleStoryClickHandler = () => {
+    if (!gameState.isStoryInProgress) return;
+    
+    storyIndex++;
+    if (storyIndex < storySequence.length) {
+      textElement.textContent = storySequence[storyIndex];
+    } else {
+      removeStoryListener(modalElement, middleStoryClickHandler);
+      gameState.isStoryInProgress = false;
+      changeToGame2();
+    }
+  };
+  addStoryListener(modalElement, middleStoryClickHandler);
+}
+
+function changeToGame2() {
+  // 数値を別のモーダルで使えるように取得
+  const currentResources = document.getElementById('resources').textContent;
+  const currentResourcesNum = parseInt(currentResources ,10); // 補給はこのターンも継続
+  const currentRelations = document.getElementById('relations').textContent;
+  const currentProgress = document.getElementById('progress').textContent;
+  const currentPersonnel = document.getElementById('personnel-count').textContent;
+  const currentMoonDevelopment = document.getElementById('moon-development').textContent;
+  // それを新しいモーダルに入れる
+  document.getElementById('resources2').textContent = currentResourcesNum + 500 * window.gameDataByChar.hokyuu;
+  document.getElementById('relations2').textContent = currentRelations;
+  document.getElementById('progress2').textContent = currentProgress;
+  document.getElementById('personnel-count2').textContent = currentPersonnel;
+  document.getElementById('moon-development2').textContent = currentMoonDevelopment;
+  // いれる処理が終わってからid: modal-gameを非表示にし、id: modal-game2を表示
+  document.getElementById('gameTextBox').classList.remove("fast-fadein-text");
+  document.getElementById('gameTextBox').classList.add("fast-fadeout-text");
+  setTimeout(function(){
+    document.getElementById('modal-game').style.display = "none";
+    document.getElementById('modal-game2').style.display = "block";
+  }, 500);
 }

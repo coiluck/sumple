@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(function(){
     startButton.style.display = "block"; // "見える化"、ね
     startButton.classList.add('fadein-title-button'); // "おしゃれの本質"
-  }, 1200);
+  }, 1000);
   // startボタンに下線を引く
   setTimeout(function(){
     startButton.classList.add('active');

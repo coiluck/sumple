@@ -1,3 +1,14 @@
+    {
+      title: '日本とのデータ連携',
+      effects: [{ stat: 'relations', value: 18 }, { stat: "progress", value: 3}],
+      stories: [
+        '大日本帝国の観測衛星とのデータ連携を開始することになった',
+        '技術交流が始まり、双方の測定精度は向上。',
+        '帝国の技術的優位はわずかに失われた。'
+      ],
+      buttonText: ""
+    },
+
 const gameScenarios = [
   [
     {

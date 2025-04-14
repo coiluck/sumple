@@ -298,10 +298,10 @@
   border: 1px solid rgba(255, 255, 255, 0.7); /* 外側の枠線 */
   pointer-events: none;
 }
-#ignore-Jew {
+#punish-Jew {
   position: relative;
 }
-#ignore-Jew::before {
+#punish-Jew::before {
   content: '';
   position: absolute;
   top: 0;
@@ -311,7 +311,7 @@
   border: 1px solid rgba(255, 255, 255, 0.7); /* 内側の枠線 */
   pointer-events: none;
 }
-#ignore-Jew::after {
+#punish-Jew::after {
   content: '';
   position: absolute;
   top: -4px;

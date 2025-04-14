@@ -4,16 +4,30 @@ const OpeningTextArray1 = [
   { text: "テキスト3" }
 ];
 const OpeningTextArray2 = [
+  { text: "薄暗い部屋にランプの炎が揺れる。"},
+  { text: "壁は厚く、小さな窓からはわずかな光しか届かない。" },
+  { text: "外界と遮断されたこの場所では、時の流れすら曖昧になる。" },
+  { text: "部屋の隅で、煙草の煙がゆっくりと渦を巻いていた。" },
   {
-    text: "テキスト2-1",
-    action: () => {
-    /*
-      document.getElementById("character1").classList.add("visible");
-    */
-    }
+    text: "外界と遮断されたこの場所では、時の流れすら曖昧になる。" ,
   },
-  { text: "テキスト2-2" },
-  { text: "テキスト2-3" }
+  { text: "「……相変わらず、ここは空気が悪いな」" ,
+    action: () => {
+      document.getElementById("opening-character").classList.remove("no-display");
+      console.log("初のキャラ表示");
+    } 
+  },
+  { text: "そう言って笑ったのは、親衛隊士官のハインツだ。" },
+  { text: "灰色の制服に黒い手袋でどこか戯けたような口調の男だった。" },
+  { text: "彼は机上に置かれたワイングラスに手を伸ばした。"},
+  { text: "グラスを傾け、赤ワインを一口飲むと言葉を続ける。"},
+  { text: "「打ち上げ、いよいよだな。まさか、お前が月まで行くことになるとは思わなかったぜ。出世したもんだ」"},
+  { text: "机に肘をつきながら、彼は冗談めかして言う。"},
+  { text: "「まあ、総統に気に入られてるんだろ？ 噂じゃ、お前に管轄権も与えられてるって話だ。すげえな、親衛隊すら口出しできねえってよ」"},
+  { text: "軽口とは裏腹に、その言葉の端々には重圧が滲んでいる。  "},
+  { text: "「で――そろそろ決めろってさ」"},
+  { text: "煙草の火を灰皿に押し付けながら、彼は少し真面目な顔になった。"},
+  { text: "「連れて行く人間だ。お前のチームだもの、お前が選ぶ。さて……誰にするんだ？」"},
 ];
 const OpeningTextArray3 = [
   { text: "地鳴りのような振動が、大地を震わせる。  " },
@@ -23,7 +37,9 @@ const OpeningTextArray3 = [
   { text: "「……総統閣下は、今日は来ない」"},
   { text: "重い声だった。彼の目にはわずかな疲労がにじんでいた。"},
   { text: "「……あの人のことは、今は誰も話したがらない。ドクターたちも口が重い。」" },
-  { text: "" },
+  { text: "総統は未だにこの帝国で最も強い力を持っているが、その姿を見る者は稀になった。"},
+  { text: "老いと病が肉体を蝕み、怒りだけが最後に残されたもののようだった。"},
+  { text: "みな、閣下の機嫌を恐れている――それが、今の帝国の現実だった。" },
   { text: "「ただ、こんな言葉を預かっている」" },
   { text: "“Der Mond ist das Schicksal des Reiches. ”――――月は、帝国の運命なり。" },
   { text: "「たったそれだけだ。……だが、お前になら分かるだろ。その意味も、重さも。だから――頼んだぞ」" },
@@ -267,7 +283,6 @@ document.getElementById("skip-button").addEventListener('click', function() {
 
 // 初期化処理 (ページの読み込み完了時)
 window.addEventListener('DOMContentLoaded', () => {
-  console.log("DOM読み込み完了、初期化開始");
   if (TextArrays && TextArrays.length > 0 && TextArrays[0] && Array.isArray(TextArrays[0]) && TextArrays[0].length > 0 && TextArrays[0][0]) {
       currentArrayIndex = 0;
       currentArray = TextArrays[currentArrayIndex];
@@ -278,7 +293,7 @@ window.addEventListener('DOMContentLoaded', () => {
       currentTextIndex++; // 最初のテキストを表示したので次へ
 
       modalOpening.addEventListener('click', openingClick); // クリックリスナーを設定
-      console.log("初期テキスト表示、イベントリスナー設定完了");
+      console.log("完了 - 初期設定");
   } else {
       console.error("初期テキスト配列の読み込みまたは設定に失敗しました。");
       // エラーメッセージを画面に表示するなどのフォールバック処理
