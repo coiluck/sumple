@@ -145,7 +145,7 @@ const gameScenarios2 = [
     [
       {
         title: '兵站船の墜落',
-        effects: [{ stat: 'resources', value: -25 }, { stat: 'progress', value: -5 }],
+        effects: [{ stat: 'resources', value: -50 }, { stat: 'progress', value: -5 }],
         stories: [
           '補給船が着陸中に制御不能となり墜落。',
           '積荷の大半が損壊し、研究資料も消失した。',
