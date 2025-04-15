@@ -507,13 +507,12 @@ const gameState = {
   currentStoryPhase: 'initial', // 'initial', 'jewStory', 'middleStory'
   storyListeners: new Set()
 };
-
 // ストーリーリスナーの管理
 function addStoryListener(element, listener) {
-  if (!gameState.storyListeners.has(listener)) {
-    element.addEventListener('click', listener);
-    gameState.storyListeners.add(listener);
-  }
+  // 既存のリスナーをすべて削除してから追加
+  removeStoryListener(element, listener);
+  element.addEventListener('click', listener);
+  gameState.storyListeners.add(listener);
 }
 
 function removeStoryListener(element, listener) {
@@ -567,13 +566,20 @@ function displayFindJewStory() {
     }
   };
 
+  // 既存のリスナーをクリアして新しいリスナーを設定
+  removeStoryListener(modalElement, storyClickHandler);
   addStoryListener(modalElement, storyClickHandler);
 }
 
-// // 選択肢 - 上
+// 選択肢 - 上
 function displaySaveJewStory() {
   const textElement = document.getElementById('game-text');
   const modalElement = document.getElementById('modal-game');
+  
+  // すべてのリスナーを削除してから新しい状態に移行
+  gameState.storyListeners.forEach(listener => {
+    removeStoryListener(modalElement, listener);
+  });
   
   gameState.isStoryInProgress = true;
   const saveJewStory = [
@@ -598,7 +604,9 @@ function displaySaveJewStory() {
       textElement.textContent = saveJewStory[storyIndex];
     } else {
       removeStoryListener(modalElement, saveJewClickHandler);
+      gameState.isStoryInProgress = false;
       gameState.currentStoryPhase = 'middleStory';
+      
       document.getElementById('gameTextBox').classList.add("fast-fadeout-text");
       setTimeout(() => {
         document.getElementById('gameTextBox').classList.remove("fast-fadeout-text");
@@ -616,6 +624,11 @@ function displayPunishJewStory() {
   const textElement = document.getElementById('game-text');
   const modalElement = document.getElementById('modal-game');
   
+  // すべてのリスナーを削除してから新しい状態に移行
+  gameState.storyListeners.forEach(listener => {
+    removeStoryListener(modalElement, listener);
+  });
+  
   gameState.isStoryInProgress = true;
   const punishJewStory = [
     "私は何も言わずに男の部屋を立ち去り、廊下を急ぎ気味に歩いた。",
@@ -631,14 +644,17 @@ function displayPunishJewStory() {
     if (!gameState.isStoryInProgress) return;
     
     storyIndex++;
-    if (storyIndex === 2) {
+    // 物資の加算は1回だけ行う
+    if (storyIndex === 5) {
       document.getElementById("resources").textContent = Number(document.getElementById("resources").textContent) + 200;
     }
     if (storyIndex < punishJewStory.length) {
       textElement.textContent = punishJewStory[storyIndex];
     } else {
       removeStoryListener(modalElement, punishJewClickHandler);
+      gameState.isStoryInProgress = false;
       gameState.currentStoryPhase = 'middleStory';
+      
       document.getElementById('gameTextBox').classList.add("fast-fadeout-text");
       setTimeout(() => {
         document.getElementById('gameTextBox').classList.remove("fast-fadeout-text");
@@ -651,33 +667,19 @@ function displayPunishJewStory() {
   addStoryListener(modalElement, punishJewClickHandler);
 }
 
-// ボタンイベントリスナー
-document.getElementById('save-Jew').addEventListener('click', function() {
-  const buttonContainer = document.querySelector(".two-button-container");
-  buttonContainer.classList.add("fast-fadeout");
-  setTimeout(() => {
-    buttonContainer.style.display = "none";
-    gameState.isStoryInProgress = false;
-    displaySaveJewStory();
-  }, 1000);
-});
-
-document.getElementById('punish-Jew').addEventListener('click', function() {
-  const buttonContainer = document.querySelector(".two-button-container");
-  buttonContainer.classList.add("fast-fadeout");
-  setTimeout(() => {
-    buttonContainer.style.display = "none";
-    gameState.isStoryInProgress = false;
-    displayPunishJewStory();
-  }, 1000);
-});
-
 // 中間ストーリー
 function displayMiddleStory() {
   if (gameState.currentStoryPhase !== 'middleStory') return;
   
   const textElement = document.getElementById('game-text');
   const modalElement = document.getElementById('modal-game');
+  
+  // すべてのリスナーを削除
+  gameState.storyListeners.forEach(listener => {
+    removeStoryListener(modalElement, listener);
+  });
+  
+  gameState.isStoryInProgress = true;
   
   const storySequence = [
     "静かな通信室に音がなった。",
@@ -708,26 +710,70 @@ function displayMiddleStory() {
       changeToGame2();
     }
   };
+  
   addStoryListener(modalElement, middleStoryClickHandler);
 }
 
+// ボタンのイベントリスナー - クロージャを使って1回だけ実行されるようにする
+document.getElementById('save-Jew').addEventListener('click', function() {
+  // ボタンを無効化して二重クリックを防止
+  document.getElementById('save-Jew').disabled = true;
+  document.getElementById('punish-Jew').disabled = true;
+  
+  const buttonContainer = document.querySelector(".two-button-container");
+  buttonContainer.classList.add("fast-fadeout");
+  setTimeout(() => {
+    buttonContainer.style.display = "none";
+    gameState.isStoryInProgress = false;
+    displaySaveJewStory();
+  }, 500);
+});
+
+document.getElementById('punish-Jew').addEventListener('click', function() {
+  // ボタンを無効化して二重クリックを防止
+  document.getElementById('save-Jew').disabled = true;
+  document.getElementById('punish-Jew').disabled = true;
+  
+  const buttonContainer = document.querySelector(".two-button-container");
+  buttonContainer.classList.add("fast-fadeout");
+  setTimeout(() => {
+    buttonContainer.style.display = "none";
+    gameState.isStoryInProgress = false;
+    displayPunishJewStory();
+  }, 500);
+});
+
 function changeToGame2() {
+  // 状態を確認し、既に遷移済みなら二重実行を防止
+  if (document.getElementById('modal-game').style.display === "none") {
+    return;
+  }
+  
   // 数値を別のモーダルで使えるように取得
   const currentResources = document.getElementById('resources').textContent;
-  const currentResourcesNum = parseInt(currentResources ,10); // 補給はこのターンも継続
+  const currentResourcesNum = parseInt(currentResources, 10); // 補給はこのターンも継続
   const currentRelations = document.getElementById('relations').textContent;
   const currentProgress = document.getElementById('progress').textContent;
   const currentPersonnel = document.getElementById('personnel-count').textContent;
   const currentMoonDevelopment = document.getElementById('moon-development').textContent;
+  
   // それを新しいモーダルに入れる
   document.getElementById('resources2').textContent = currentResourcesNum + 500 * window.gameDataByChar.hokyuu;
   document.getElementById('relations2').textContent = currentRelations;
   document.getElementById('progress2').textContent = currentProgress;
   document.getElementById('personnel-count2').textContent = currentPersonnel;
   document.getElementById('moon-development2').textContent = currentMoonDevelopment;
+  
   // いれる処理が終わってからid: modal-gameを非表示にし、id: modal-game2を表示
   document.getElementById('gameTextBox').classList.remove("fast-fadein-text");
   document.getElementById('gameTextBox').classList.add("fast-fadeout-text");
+  
+  // すべてのクリックイベントを無効化
+  gameState.storyListeners.forEach(listener => {
+    const modalElement = document.getElementById('modal-game');
+    removeStoryListener(modalElement, listener);
+  });
+  
   setTimeout(function(){
     document.getElementById('modal-game').style.display = "none";
     document.getElementById('modal-game2').style.display = "block";

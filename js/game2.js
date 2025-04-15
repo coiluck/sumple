@@ -442,13 +442,12 @@ initializeGame2();
 
 // 分岐
 
-
-
 document.querySelector("#save-Jew").addEventListener("click", function() {
   // 別にいいんだけどなんでquerySelector使っているんだ
   hasSavedJew = true;
   console.log("記録しました: 男 - 救済")
 });
+
 function determineEnding() {
   // √分岐system
   const Relations = Number(document.getElementById("relations2").textContent);
@@ -505,4 +504,63 @@ function determineEndingToBadEnd(){
     document.getElementById("modal-ending").style.display = "block";
     document.getElementById("modal-ending").classList.add("fadein");
   }, 1000);
+}
+
+// 
+function AnimationOfResultModal() {
+  const imgWrap = document.querySelector('.img-wrap');
+  const lineContainer = document.querySelector('.line-container');
+  const lines = document.querySelectorAll('.line');
+
+  // 画像アニメーションを再実行
+  imgWrap.classList.remove('animate');
+  void imgWrap.offsetWidth;
+  imgWrap.classList.add('animate');
+
+  // 少し待ってから線を伸ばす（画像アニメ完了後）
+  setTimeout(() => {
+    // 個別の線のアニメーション
+    lines.forEach(line => {
+      line.classList.remove('animate');
+      void line.offsetWidth;
+      line.classList.add('animate');
+    });
+
+    // 1.5秒後に位置を上に移動
+    setTimeout(() => {
+      imgWrap.style.top = '10%';
+      lineContainer.style.top = '10%';
+
+      // 🕒 アニメーション完了後の表示処理（ここが新しく追加された部分）
+      setTimeout(() => {
+        const title = document.getElementById('result-title');
+        const listItems = document.querySelectorAll('#result-requirement li');
+        const button = document.getElementById('result-button');
+        let delay = 0;
+
+        // タイトル表示
+        setTimeout(() => {
+          title.classList.remove('no-display');
+          title.classList.add("fast-fadein");
+        }, delay);
+        delay += 200;
+
+        // リストの各項目を順に表示
+        listItems.forEach((li, index) => {
+          setTimeout(() => {
+            li.classList.remove('no-display');
+            li.classList.add("fast-fadein");
+          }, delay + index * 200);
+        });
+
+        // 最後にボタン表示（リストの後）
+        setTimeout(() => {
+          button.classList.remove('no-display');
+          button.classList.add("fast-fadein");
+          button.classList.add("active");
+        }, delay + listItems.length * 200);
+
+      }, 1000); // 上移動完了からさらに 1秒後
+    }, 750);
+  }, 750); // 最初の画像アニメ開始から 750ms
 }

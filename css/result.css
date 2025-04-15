@@ -1,0 +1,146 @@
+#modal-result {
+  display: block;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+.result-background {
+  width: 100%;
+  height: 100%;
+}
+.result-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.img-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: 80px;
+  max-height: 80px;
+  transform: translate(-50%, -50%);
+  transition: top 0.8s ease; /* 位置の移動をスムーズにする */
+}
+
+.img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* アニメーションクラスを分離 */
+.img-wrap.animate {
+  animation: img-wrap 2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes img-wrap {
+  0% {
+    clip-path: circle(0 at 50% 50%);
+    -webkit-clip-path: circle(0 at 50% 50%);
+    opacity: .5;
+  }
+  100% {
+    clip-path: circle(100% at 50% 50%);
+    -webkit-clip-path: circle(100% at 50% 50%);
+    opacity: 1;
+  }
+}
+.line-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  display: flex;
+  justify-content: center; /* 中央揃え */
+  align-items: center;
+  transition: top 0.8s ease; /* 位置の移動をスムーズにする */
+}
+
+.line {
+  position: relative;
+  height: 1px;
+  background: #ccc;
+  width: 0;
+  opacity: 0;
+}
+
+.line.left {
+  transform-origin: right; /* 右端が固定点 */
+  margin-right: 40px; /* 画像の半分のスペース */
+}
+
+.line.right {
+  transform-origin: left; /* 左端が固定点 */
+  margin-left: 40px; /* 画像の半分のスペース */
+}
+
+/* 個別の線のアニメーション */
+.line.animate {
+  animation: line-expand 1s ease-out forwards;
+}
+
+@keyframes line-expand {
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+  100% {
+    width: calc(50% - 50px); /* 画像の半分より少し余裕をもたせる */
+    opacity: 1;
+  }
+}
+
+#result-title {
+  position: absolute;
+  top: calc( 70px + 10% );
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.2em;
+  color: #ccc;
+  text-shadow: 2px 2px 2px rgba(250, 250, 250, 0.5);
+}
+#result-requirement-container {
+  position: absolute;
+  top: calc( 100px + 10% + 1.2em );
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+}
+#result-requirement {
+  list-style: circle;
+  list-style-position: inside;
+  color: #ccc;
+  padding: 0;
+}
+#result-requirement li {
+  color: #ccc;
+}
+#result-button {
+  position: absolute;
+  top: 85%;
+  background: transparent;
+}
+/* 下線アニメーション */
+#result-button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #ddd;
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);;
+}
+#result-button.active::after {
+  width: 100%;
+}
