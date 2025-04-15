@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="./css/select.css">
   <link rel="stylesheet" href="./css/game.css">
   <link rel="stylesheet" href="./css/game2.css">
+  <link rel="stylesheet" href="./css/result.css">
   <link rel="stylesheet" href="./css/ending.css">
   <link rel="icon" href="./image/favicon.ico">
 </head>
@@ -255,22 +256,21 @@
     <div class="result-background">
       <img src="./image/background.avif">
     </div>
-    <div class="img-wrap">
-      <!--白いfaviconのavifに変えておいて-->
-      <img src="./image/favicon.png">
+    <div class="img-wrap no-display">
+      <img src="./image/favicon.avif">
     </div>
     <div class="line-container">
       <div class="line left"></div>
       <div class="line right"></div>
     </div>
-    <div id="result-title">分岐タイトル</div>
+    <div id="result-title" class="no-display">分岐タイトル</div>
     <div id="result-requirement-container">
       <ul id="result-requirement">
-        <li>aaa</li>
-        <li>bbb</li>
+        <li class="no-display">aaa</li>
+        <li class="no-display">bbb</li>
       </ul>
     </div>
-    <button id="result-button" onclick="toEndingStory()">エンディングストーリーへ</div>
+    <button id="result-button" onclick="toEndingStory()" class="no-display">次へ</button>
   </div>  
 
   <div id="modal-ending">
@@ -288,7 +288,12 @@
     </div>
   </div>
 
+  <!--分岐用（絶対もっと方法あっただろ）-->
   <div id="ENDING_TYPE" class="no-display"></div>
+  <div id="ENDING_TYPE1_HEYDRICH" class="no-display">false</div>
+  <div id="ENDING_TYPE1_BETRAY" class="no-display">false</div>
+  <div id="ENDING_TYPE1_SHINETHESUN" class="no-display">false</div>
+  <div id="ENDING_TYPE_ISBADEND" class="no-display">false</div>
 
   <script src="./js/title.js"></script>
   <script src="./js/opening.js"></script>

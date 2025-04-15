@@ -125,3 +125,14 @@ const EndClick = function() {
     }
   }
 }
+
+function toEndingStory() {
+  document.getElementById("result-button").onclick = null;
+  document.getElementById("modal-result").classList.remove("fadein");
+  document.getElementById("modal-result").classList.add("fadeout");
+  setTimeout(() => {
+    document.getElementById("modal-result").style.display = "none";
+    document.getElementById("modal-ending").style.display = "block";
+    document.getElementById("modal-ending").classList.add("fadein");
+  }, 1000);
+}

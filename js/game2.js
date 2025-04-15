@@ -66,7 +66,7 @@ function updateEffects2(count) {
   const choiceCards = document.querySelectorAll(".choice-card2");
   choiceCards.forEach((card, index) => {
     // データを取得
-    const scenario = gameScenarios[currentRound][index];
+    const scenario = gameScenarios2[currentRound2][index];
     const effectDescriptions = scenario.effects.map(effect => {
       let statName;
       switch (effect.stat) {
@@ -456,39 +456,77 @@ function determineEnding() {
   console.log("最終スコア: " + "研究: " + Progress + ", 開発: " + Development + ", 関係: " + Relations);
   if (Progress >= 100) {
     // 誰につく？の分岐
+    // modal-resultの設定
+    document.getElementById("result-title").textContent = "誰につくか選ぶ";
+    addItemsToList(["研究が終わっている"]);
+    // これだけこの中の分岐を
+    if (hasSavedJew == false) {
+      document.getElementById("ENDING_TYPE1_HEYDRICH").textContent = "true"
+    }
+    if (hasSavedJPN == true && Relations >= 100) {
+      document.getElementById("ENDING_TYPE1_BETRAY").textContent = "true"
+    }
+    if (hasSavedJew == true && Development >= 100) {
+      document.getElementById("ENDING_TYPE1_SHINETHESUN").textContent = "true"
+    }
+    // モーダル移行
     document.getElementById("ENDING_TYPE").textContent = "TYPE_1";
-    document.getElementById("modal-game").classList.add("fadeout");
+    document.getElementById("modal-game2").classList.add("fadeout");
     setTimeout(() => {
-      document.getElementById("modal-game").style.display = "none";
-      document.getElementById("modal-ending").style.display = "block";
-      document.getElementById("modal-ending").classList.add("fadein");
+      document.getElementById("modal-game2").style.display = "none";
+      document.getElementById("modal-result").style.display = "block";
+      document.getElementById("modal-result").classList.add("fadein");
+      setTimeout(() => {
+        AnimationOfResultModal()
+      }, 1500);
     }, 1000);
-  } else if (Relations >= 100 && Development >= 100 && hasSavedJPN == true && hasSavedJew == true) {
+  } else if (Relations >= 100 && Development >= 100 && hasSavedJPN == true) {
     // 日本と統合（ドイツ優位）
+    // modal-resultの設定
+    document.getElementById("result-title").textContent = "日本基地の傘下に入る";
+    addItemsToList(["研究が終わっていない"],["関係値が100以上"],["月面開発が100以上"],["日本基地を救った"]);
+    // モーダル移行
     document.getElementById("ENDING_TYPE").textContent = "TYPE_2";
-    document.getElementById("modal-game").classList.add("fadeout");
+    document.getElementById("modal-game2").classList.add("fadeout");
     setTimeout(() => {
-      document.getElementById("modal-game").style.display = "none";
-      document.getElementById("modal-ending").style.display = "block";
-      document.getElementById("modal-ending").classList.add("fadein");
+      document.getElementById("modal-game2").style.display = "none";
+      document.getElementById("modal-result").style.display = "block";
+      document.getElementById("modal-result").classList.add("fadein");
+      setTimeout(() => {
+        AnimationOfResultModal()
+      }, 1500);
     }, 1000);
   } else if (Development >= 100 && hasSavedJew == true) {
     // 月面帝国
+    // modal-resultの設定
+    document.getElementById("result-title").textContent = "月面帝国を築く";
+    addItemsToList(["研究が終わっていない"],["月面開発が100以上"],["ユダヤ人を見逃した"]);
+    // モーダル移行
     document.getElementById("ENDING_TYPE").textContent = "TYPE_3";
-    document.getElementById("modal-game").classList.add("fadeout");
+    document.getElementById("modal-game2").classList.add("fadeout");
     setTimeout(() => {
-      document.getElementById("modal-game").style.display = "none";
-      document.getElementById("modal-ending").style.display = "block";
-      document.getElementById("modal-ending").classList.add("fadein");
+      document.getElementById("modal-game2").style.display = "none";
+      document.getElementById("modal-result").style.display = "block";
+      document.getElementById("modal-result").classList.add("fadein");
+      setTimeout(() => {
+        AnimationOfResultModal()
+      }, 1500);
     }, 1000);
   } else if (Relations >= 100 && hasSavedJPN == true) {
     // 日本と統合（日本優位）
+    // modal-resultの設定
+    document.getElementById("result-title").textContent = "日本基地の傘下に入る";
+    addItemsToList(["研究が終わっていない"],["関係値が100以上"],["日本基地を救った"]);
+    // モーダル移行
     document.getElementById("ENDING_TYPE").textContent = "TYPE_4";
-    document.getElementById("modal-game").classList.add("fadeout");
+    document.getElementById("modal-game2").classList.add("fadeout");
     setTimeout(() => {
-      document.getElementById("modal-game").style.display = "none";
-      document.getElementById("modal-ending").style.display = "block";
-      document.getElementById("modal-ending").classList.add("fadein");
+      document.getElementById("modal-game2").style.display = "none";
+      document.getElementById("modal-result").style.display = "block";
+      document.getElementById("modal-result").classList.add("fadein");
+      setTimeout(() => {
+        AnimationOfResultModal()
+      }, 1500);
     }, 1000);
   } else {
     determineEndingToBadEnd();
@@ -497,26 +535,45 @@ function determineEnding() {
 }
 function determineEndingToBadEnd(){
   // すべて終わっていないor物資が足りなくなる
+  // modal-resultの設定
+  document.getElementById("result-title").textContent = "Bad End";
+  addItemsToList(["分岐条件にあてはまらないor物資の値が負になる"]);
+  // モーダル移行
   document.getElementById("ENDING_TYPE").textContent = "BADEND";
-  document.getElementById("modal-game").classList.add("fadeout");
+  document.getElementById("modal-game2").classList.add("fadeout");
+  document.getElementById("ENDING_TYPE_ISBADEND").textContent = "true";
   setTimeout(() => {
-    document.getElementById("modal-game").style.display = "none";
-    document.getElementById("modal-ending").style.display = "block";
-    document.getElementById("modal-ending").classList.add("fadein");
+    document.getElementById("modal-game2").style.display = "none";
+    document.getElementById("modal-result").style.display = "block";
+    document.getElementById("modal-result").classList.add("fadein");
+    setTimeout(() => {
+      AnimationOfResultModal()
+    }, 1500);
   }, 1000);
 }
 
-// 
+// 分岐条件を記載
+function addItemsToList(items) {
+  const ul = document.getElementById('result-requirement');
+  items.forEach(item => {
+    const li = document.createElement('li');
+    li.className = 'no-visible';
+    li.textContent = item;
+    ul.appendChild(li);
+  });
+}
+
+// result用のアニメーション
 function AnimationOfResultModal() {
   const imgWrap = document.querySelector('.img-wrap');
   const lineContainer = document.querySelector('.line-container');
   const lines = document.querySelectorAll('.line');
 
-  // 画像アニメーションを再実行
+  // 画像アニメーションを実行
+  imgWrap.classList.remove('no-display');
   imgWrap.classList.remove('animate');
   void imgWrap.offsetWidth;
   imgWrap.classList.add('animate');
-
   // 少し待ってから線を伸ばす（画像アニメ完了後）
   setTimeout(() => {
     // 個別の線のアニメーション
@@ -525,42 +582,36 @@ function AnimationOfResultModal() {
       void line.offsetWidth;
       line.classList.add('animate');
     });
-
     // 1.5秒後に位置を上に移動
     setTimeout(() => {
       imgWrap.style.top = '10%';
       lineContainer.style.top = '10%';
-
-      // 🕒 アニメーション完了後の表示処理（ここが新しく追加された部分）
+      // アニメーション完了後の表示処理
       setTimeout(() => {
         const title = document.getElementById('result-title');
         const listItems = document.querySelectorAll('#result-requirement li');
         const button = document.getElementById('result-button');
         let delay = 0;
-
         // タイトル表示
         setTimeout(() => {
           title.classList.remove('no-display');
           title.classList.add("fast-fadein");
         }, delay);
         delay += 200;
-
         // リストの各項目を順に表示
         listItems.forEach((li, index) => {
           setTimeout(() => {
-            li.classList.remove('no-display');
+            li.classList.remove('no-visible');
             li.classList.add("fast-fadein");
           }, delay + index * 200);
         });
-
         // 最後にボタン表示（リストの後）
         setTimeout(() => {
           button.classList.remove('no-display');
           button.classList.add("fast-fadein");
           button.classList.add("active");
-        }, delay + listItems.length * 200);
-
+        }, delay + listItems.length * 200 + 200);
       }, 1000); // 上移動完了からさらに 1秒後
     }, 750);
-  }, 750); // 最初の画像アニメ開始から 750ms
+  }, 500); // 最初の画像アニメ開始から 750ms
 }

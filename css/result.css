@@ -1,5 +1,5 @@
 #modal-result {
-  display: block;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -8,7 +8,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: 200;
   overflow: hidden;
 }
 .result-background {
@@ -45,7 +45,7 @@
   0% {
     clip-path: circle(0 at 50% 50%);
     -webkit-clip-path: circle(0 at 50% 50%);
-    opacity: .5;
+    opacity: .3;
   }
   100% {
     clip-path: circle(100% at 50% 50%);
@@ -128,7 +128,11 @@
 #result-button {
   position: absolute;
   top: 85%;
+  left: 50%;
+  transform: translateX(-50%);
   background: transparent;
+  border: none;
+  color: #ccc;
 }
 /* 下線アニメーション */
 #result-button::after {
