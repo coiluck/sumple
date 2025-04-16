@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="./css/game2.css">
   <link rel="stylesheet" href="./css/result.css">
   <link rel="stylesheet" href="./css/ending.css">
+  <link rel="stylesheet" href="./css/restart.css">
   <link rel="icon" href="./image/favicon.ico">
 </head>
 <body>
@@ -270,7 +271,7 @@
         <li class="no-display">bbb</li>
       </ul>
     </div>
-    <button id="result-button" onclick="toEndingStory()" class="no-display">次へ</button>
+    <button id="result-button" onclick="toEndingStory()" class="no-display">次へすすむ</button>
   </div>  
 
   <div id="modal-ending">
@@ -288,12 +289,21 @@
     </div>
   </div>
 
-  <!--分岐用（絶対もっと方法あっただろ）-->
+  <div id="modal-restart">
+    <!--はじめから-->
+    <div class="restart-background">
+      <img src="./image/background.avif">
+    </div>
+    <div id="title-JPN-re">陽の沈む場所</div>
+    <div id="title-GER-re">- Platz unter der sinkenden Sonne -</div>
+    <div id="restart-button" class="underline-before">Restart</div>
+  </div>
+
+  <!--分岐用（絶対もっと方法あっただろw）-->
   <div id="ENDING_TYPE" class="no-display"></div>
   <div id="ENDING_TYPE1_HEYDRICH" class="no-display">false</div>
   <div id="ENDING_TYPE1_BETRAY" class="no-display">false</div>
   <div id="ENDING_TYPE1_SHINETHESUN" class="no-display">false</div>
-  <div id="ENDING_TYPE_ISBADEND" class="no-display">false</div>
 
   <script src="./js/title.js"></script>
   <script src="./js/opening.js"></script>

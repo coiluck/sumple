@@ -541,7 +541,6 @@ function determineEndingToBadEnd(){
   // モーダル移行
   document.getElementById("ENDING_TYPE").textContent = "BADEND";
   document.getElementById("modal-game2").classList.add("fadeout");
-  document.getElementById("ENDING_TYPE_ISBADEND").textContent = "true";
   setTimeout(() => {
     document.getElementById("modal-game2").style.display = "none";
     document.getElementById("modal-result").style.display = "block";

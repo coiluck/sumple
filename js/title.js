@@ -100,19 +100,19 @@ const skipCansel = function(event){
   event.stopPropagation();
   // スキップをキャンセル
   console.log("選択しました: スキップしない");
-  document.getElementById("skip-button").removeEventListener('click', skipButton); // イベントリスナーを解除
+  document.getElementById("skip-button").removeEventListener('click', skipExecute); // イベントリスナーを解除
   document.getElementById("skip-cancel").removeEventListener('click', skipCansel); // イベントリスナーを解除
   document.getElementById("skip-window").classList.add('fadeout'); // フェードアウト開始
   setTimeout(function() { 
     document.getElementById("skip-window").style.display = "none"; 
   }, 1000);
 }
-const skipButton = function(event){
+const skipExecute = function(event){
   // イベントの伝播を防ぐ
   event.stopPropagation();
   // スキップする場合
   console.log("選択しました: スキップする");
-  document.getElementById("skip-button").removeEventListener("click", skipButton); // イベントリスナーを解除
+  document.getElementById("skip-button").removeEventListener("click", skipExecute); // イベントリスナーを解除
   document.getElementById("skip-cancel").removeEventListener("click", skipCansel); // イベントリスナーを解除
   // 見えてるのはフェードアウト
   document.getElementById("modal-opening").classList.add("fadeout"); // フェードアウト開始
@@ -127,4 +127,4 @@ const skipButton = function(event){
 }
 
 document.getElementById("skip-cancel").addEventListener("click", skipCansel);
-document.getElementById("skip-button").addEventListener("click", skipButton);
+document.getElementById("skip-button").addEventListener("click", skipExecute);

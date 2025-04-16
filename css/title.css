@@ -292,3 +292,29 @@
 #skip-button:hover {
   background-color: #555;
 }
+
+/* Restartのやつfont-familyのためここに書く */
+#title-JPN-re {
+  position: absolute;
+  top: 30%;
+  font-size: 2em;
+  font-family: "yujimai", serif;
+  color: #ddd;
+  text-shadow: 4px 2px 8px rgba(224, 224, 224, 0.8);
+}
+#title-GER-re {
+  position: absolute;
+  top: 40%;
+  font-size: 1em;
+  font-family: "bokor", sans-serif;
+  color: #ddd;
+  text-shadow: 4px 2px 8px rgba(224, 224, 224, 0.8);
+}
+#restart-button {
+  display: none;
+  position: absolute;
+  top: 100%;
+  font-family: "melete", sans-serif;
+  color: #ddd;
+  background: transparent;
+}

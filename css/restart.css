@@ -1,0 +1,37 @@
+/* タイトル部分 */
+#modal-restart {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+.restart-background {
+  width: 100%;
+  height: 100%;
+}
+.restart-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* 下線アニメーション */
+#restart-button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #ddd;
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);;
+}
+#restart-button.active::after {
+  width: 100%;
+}

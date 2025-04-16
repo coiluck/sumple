@@ -148,9 +148,7 @@ const openingClick = function () {
         const modalSelect = document.getElementById("modal-select");
         modalSelect.style.display = "block";
         modalSelect.classList.add("fadein");
-        // isProcessing は選択画面のボタンが押されるまで true のままにするか、
-        // ここで false にして選択画面側の処理で再度 true にするか。
-        // ここでは一旦 false にして、選択画面の責務とする。
+        // isProcessing は選択画面のボタンが押されるまで true のまま
         isProcessing = false;
       } else if (nextArrayIndex === 3) { 
         // OpeningTextArray3 -> ゲーム画面へ
