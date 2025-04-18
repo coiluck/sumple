@@ -41,7 +41,7 @@ const OpeningTextArray3 = [
   { text: "老いと病が肉体を蝕み、怒りだけが最後に残されたもののようだった。"},
   { text: "みな、閣下の機嫌を恐れている――それが、今の帝国の現実だった。" },
   { text: "「ただ、こんな言葉を預かっている」" },
-  { text: "“Der Mond ist das Schicksal des Reiches. ”――――月は、帝国の運命なり。" },
+  { text: "Der Mond ist das Schicksal des Reiches. ――――月は、帝国の運命なり。" },
   { text: "「たったそれだけだ。……だが、お前になら分かるだろ。その意味も、重さも。だから――頼んだぞ」" },
   { text: "短く、軍人らしい敬礼を交わしたあと、ハインツは小さく笑った。" },
   { text: "「ここで別れるかもしれないが――まあ、死ぬなよ。月の上で死体になったら、帰ってこれないからな」" },
@@ -55,9 +55,19 @@ const OpeningTextArray3 = [
   { text: "私は、静かにその言葉を口にした。" },
   { text: "「始めよう――ライヒ最後の征服を！」  " },
 ];
+const OpeningTextArray2After = [
+  { text: "111" },
+  { text: "222" },
+  { text: "333" },
+  { text: "444" },
+  { text: "555" },
+  { text: "666" },
+  { text: "777" },
+]
 const TextArrays = [
   OpeningTextArray1,
   OpeningTextArray2,
+  OpeningTextArray2After,
   OpeningTextArray3
 ];
 const modalOpening = document.getElementById('modal-opening');
@@ -65,7 +75,7 @@ const textArea = document.getElementById('opening-text');
 
 let currentArray = OpeningTextArray1;
 let currentTextIndex = 0;
-let currentArrayIndex = 1;
+let currentArrayIndex = 0; // 0から始まるように修正
 
 // 連続クリック防止のフラグを追加
 let isProcessing = false;
@@ -76,6 +86,10 @@ const openingClick = function () {
     console.log("処理中のためクリックを無視します");
     return;
   }
+  
+  // フラグを立てて処理開始
+  isProcessing = true;
+  
   // 配列やインデックスの有効性をチェック
   if (!TextArrays || !Array.isArray(TextArrays) || typeof currentArrayIndex !== 'number' || currentArrayIndex < 0 || currentArrayIndex >= TextArrays.length) {
     console.error("TextArrays または currentArrayIndex が不正です。状態をリセットします。", {
@@ -87,8 +101,10 @@ const openingClick = function () {
     if (currentArray && currentArray.length > 0 && typeof currentTextIndex === 'number' && currentTextIndex < currentArray.length) {
       textArea.textContent = currentArray[currentTextIndex].text;
     }
+    isProcessing = false;
     return;
   }
+  
   // 現在の配列を取得
   currentArray = TextArrays[currentArrayIndex];
   if (!currentArray || !Array.isArray(currentArray)) {
@@ -99,8 +115,10 @@ const openingClick = function () {
     if (currentArray && currentArray.length > 0 && typeof currentTextIndex === 'number' && currentTextIndex < currentArray.length) {
       textArea.textContent = currentArray[currentTextIndex].text;
     }
+    isProcessing = false;
     return;
   }
+  
   // 現在の配列内のテキストを進める
   if (typeof currentTextIndex === 'number' && currentTextIndex < currentArray.length) {
     const currentItem = currentArray[currentTextIndex];
@@ -112,22 +130,25 @@ const openingClick = function () {
       currentItem.action();
     }
     currentTextIndex++;
+    isProcessing = false; // テキスト表示完了
   // 現在の配列の最後まで到達した場合
   } else {
-    isProcessing = true;
     console.log(`配列 ${currentArrayIndex} の最後に到達。次の処理へ移行します。`);
     // フェードアウト開始
     modalOpening.classList.remove("fadein");
     modalOpening.classList.add("fadeout");
+    
     // フェードアウト後に次の処理を実行
     setTimeout(() => {
       const nextArrayIndex = currentArrayIndex + 1;
+      
       if (nextArrayIndex === 1) { 
         // OpeningTextArray1 -> OpeningTextArray2 へ
         console.log("オープニング2へ移行");
         currentArrayIndex = nextArrayIndex; // インデックスを更新
         currentArray = TextArrays[currentArrayIndex]; // 新しい配列を設定
         currentTextIndex = 0; // テキストインデックスをリセット
+        
         if (currentArray && currentArray.length > 0) {
           document.querySelector(".opening-background img").src = "./image/room.avif"; // 背景変更
           textArea.textContent = currentArray[currentTextIndex].text; // 最初のテキスト表示
@@ -138,6 +159,7 @@ const openingClick = function () {
         } else {
           console.error("オープニング2の配列が無効です");
           rebindClickListener();
+          isProcessing = false;
         }
       } else if (nextArrayIndex === 2) { 
         // OpeningTextArray2 -> 選択画面へ
@@ -148,9 +170,21 @@ const openingClick = function () {
         const modalSelect = document.getElementById("modal-select");
         modalSelect.style.display = "block";
         modalSelect.classList.add("fadein");
-        // isProcessing は選択画面のボタンが押されるまで true のまま
-        isProcessing = false;
+        isProcessing = false; // 選択画面表示完了
       } else if (nextArrayIndex === 3) { 
+        console.log("オープニング3へ移行");
+        // 背景を更新
+        document.querySelector(".opening-background img").src = "./image/rocket.avif";
+        // 次の配列に移る
+        currentArrayIndex = nextArrayIndex;
+        currentArray = TextArrays[currentArrayIndex]; // 新しい配列を設定
+        currentTextIndex = 0; // テキストインデックスをリセット
+        textArea.textContent = currentArray[currentTextIndex].text; // 最初のテキスト表示
+        currentTextIndex++;
+        modalOpening.classList.remove("fadeout");
+        modalOpening.classList.add("fadein");
+        isProcessing = false; // 処理完了
+      } else if (nextArrayIndex === 4) { 
         // OpeningTextArray3 -> ゲーム画面へ
         console.log("ゲーム画面へ移行");
         currentArrayIndex = nextArrayIndex; 
@@ -168,20 +202,20 @@ const openingClick = function () {
         modalOpening.removeEventListener('click', openingClick);
         // ゲーム画面表示のフェードイン (少し遅延させる)
         setTimeout(function() {
-        const modalGame = document.getElementById("modal-game");
-        modalGame.style.display = "block";
-        modalGame.classList.add('fadein');
-        isProcessing = false;
+          const modalGame = document.getElementById("modal-game");
+          modalGame.style.display = "block";
+          modalGame.classList.add('fadein');
+          isProcessing = false; // 処理完了
         }, 100);
       } else {
         // 想定外！
         console.error("予期しない次の ArrayIndex:", nextArrayIndex, "。状態をリセットします。");
         rebindClickListener();
+        isProcessing = false;
       }
     }, 1000);
   }
 };
-
 
 function resetToInitialState() {
   console.log("状態をリセットしています...");
@@ -214,10 +248,10 @@ function rebindClickListener() {
 
 modalOpening.addEventListener('click', openingClick);
 
-const array2to3 = function() {
+const array2toAfter = function() {
   // 二重実行防止
   if (isProcessing) {
-    console.log("array2to3: 処理中のためクリックを無視します");
+    console.log("array2toAfter: 処理中のためクリックを無視します");
     return;
   }
   isProcessing = true; 
@@ -227,12 +261,11 @@ const array2to3 = function() {
   setTimeout(function () {
     modalSelect.style.display = "none";
     modalSelect.classList.remove("fadeout"); 
-    currentArrayIndex = 2; //  OpeningTextArray3 
+    currentArrayIndex = 2; //  OpeningTextArray2After 
     currentArray = TextArrays[currentArrayIndex];
     currentTextIndex = 0;
     if (currentArray && currentArray.length > 0 && currentArray[currentTextIndex]) {
-       // UI更新 (背景、モーダル表示、最初のテキスト)
-      document.querySelector(".opening-background img").src = "./image/rocket.avif";
+      // UI更新 (背景、モーダル表示、最初のテキスト)
       modalOpening.style.display = "block";
       modalOpening.classList.remove("fadeout");
       modalOpening.classList.add("fadein");
@@ -240,24 +273,31 @@ const array2to3 = function() {
       currentTextIndex++;
       modalOpening.removeEventListener('click', openingClick); // 念のため削除
       modalOpening.addEventListener('click', openingClick); // 再度追加
-      console.log("オープニング3の表示開始");
+      console.log("オープニング2Afterの表示開始");
       isProcessing = false; // 処理完了時にフラグを解除
     } else {
-      console.error("配列3が無効、または最初のテキストがありません");
+      console.error("配列が無効、または最初のテキストがありません");
       rebindClickListener(); // 初期状態に戻す
       // isProcessing は rebindClickListener 内で false になる
     }
   }, 1000);
 }
 
-document.getElementById("confirm-button").addEventListener('click', array2to3);
+document.getElementById("confirm-button").addEventListener('click', array2toAfter);
 
 document.getElementById("skip-button").addEventListener('click', function() {
   // skipボタンが押されたら...
   // 既存のイベントリスナーを削除
-  document.getElementById("confirm-button").removeEventListener('click', array2to3);
+  document.getElementById("confirm-button").removeEventListener('click', array2toAfter);
   // 新しいイベントリスナーを追加
   document.getElementById("confirm-button").addEventListener('click', function() {
+    // 二重実行防止
+    if (isProcessing) {
+      console.log("skip confirm: 処理中のためクリックを無視します");
+      return;
+    }
+    isProcessing = true;
+    
     const modalSelect = document.getElementById("modal-select");
     modalSelect.classList.remove("fadein");
     modalSelect.classList.add("fadeout");
@@ -274,10 +314,10 @@ document.getElementById("skip-button").addEventListener('click', function() {
         console.log("削除しました: チュートリアル");
         document.getElementById("game-tutorial").style.display = "none";
       }
+      isProcessing = false;
     }, 1000);
   });
 });
-
 
 // 初期化処理 (ページの読み込み完了時)
 window.addEventListener('DOMContentLoaded', () => {
