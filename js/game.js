@@ -172,7 +172,7 @@ const gameScenarios = [
         '月面の放射線データは、核反応機構の理論に新たな仮説をもたらした。',
         '地球上での実験では得られなかった精度に研究者らは喜ぶ。'
       ],
-      buttonText: "放射線実験はいつか役に立つだろう"
+      buttonText: "いつか役に立つだろう"
     },
     {
       title: '補給船停泊所の整備',
@@ -405,6 +405,10 @@ function handleChoiceClick(event) {
   let resources = parseInt(resourcesElement.textContent, 10);
   const resourceCost = 200 + personnelCount * 5 * window.gameDataByChar.shouhi;
   resources -= resourceCost;
+  if (resources < 0) {
+    console.log("Failed to Resource-Control");
+    determineEndingToBadEnd1();
+  }
   resourcesElement.textContent = resources;
   console.log("消費適用倍率: 200 + " + personnelCount + " * 5 * " + window.gameDataByChar.shouhi);
   // クリックされた選択肢カードを特定し、対応するシナリオのインデックスを取得
@@ -454,16 +458,11 @@ function updateStatus(effects, personnelCount) {
     // 倍率適用
     if (effect.stat === 'progress' && value >= 0) { 
       value *= window.gameDataByChar.kennkyuu;
-      console.log("スコア適用倍率 (progress): " + ratio + " * " + window.gameDataByChar.kennkyuu);
     } else if (effect.stat === 'relations' && value >= 0) {
       value *= window.gameDataByChar.kannkei;
-      console.log("スコア適用倍率 (relations): " + ratio + " * " + window.gameDataByChar.kannkei);
     } else if(effect.stat === 'resources') {
       // resourcesの場合は比率適用しない
       value = effect.value;
-      console.log("スコア適用倍率 (relations): 1" )
-    } else if (value >= 0) {
-      console.log("スコア適用倍率 (other): " + ratio);
     }
     // 加算する前に変動値を切り捨てる
     const calculatedValue = Math.floor(value);
@@ -778,4 +777,87 @@ function changeToGame2() {
     document.getElementById('modal-game').style.display = "none";
     document.getElementById('modal-game2').style.display = "block";
   }, 500);
+}
+
+
+// 物資0以下の時のために持ってきた
+function determineEndingToBadEnd1(){
+  // game1で物資が足りなくなる
+  // modal-resultの設定
+  document.getElementById("result-title").textContent = "Bad End";
+  addItemsToList1(["物資の値が負になる"]);
+  // モーダル移行
+  document.getElementById("ENDING_TYPE").textContent = "BADEND";
+  document.getElementById("modal-game").classList.add("fadeout");
+  setTimeout(() => {
+    document.getElementById("modal-game").style.display = "none";
+    document.getElementById("modal-result").style.display = "block";
+    document.getElementById("modal-result").classList.add("fadein");
+    setTimeout(() => {
+      AnimationOfResultModal1()
+    }, 1500);
+  }, 1000);
+}
+
+// 分岐条件を記載
+function addItemsToList1(items) {
+  const ul = document.getElementById('result-requirement');
+  items.forEach(item => {
+    const li = document.createElement('li');
+    li.className = 'no-visible';
+    li.textContent = item;
+    ul.appendChild(li);
+  });
+}
+
+// result用のアニメーション
+function AnimationOfResultModal1() {
+  const imgWrap = document.querySelector('.img-wrap');
+  const lineContainer = document.querySelector('.line-container');
+  const lines = document.querySelectorAll('.line');
+  // 画像アニメーションを実行
+  imgWrap.classList.remove('no-display');
+  imgWrap.classList.remove('animate');
+  void imgWrap.offsetWidth;
+  imgWrap.classList.add('animate');
+  // 少し待ってから線を伸ばす（画像アニメ完了後）
+  setTimeout(() => {
+    // 個別の線のアニメーション
+    lines.forEach(line => {
+      line.classList.remove('animate');
+      void line.offsetWidth;
+      line.classList.add('animate');
+    });
+    // 1.5秒後に位置を上に移動
+    setTimeout(() => {
+      imgWrap.style.top = '10%';
+      lineContainer.style.top = '10%';
+      // アニメーション完了後の表示処理
+      setTimeout(() => {
+        const title = document.getElementById('result-title');
+        const listItems = document.querySelectorAll('#result-requirement li');
+        const button = document.getElementById('result-button');
+        let delay = 0;
+        // タイトル表示
+        setTimeout(() => {
+          title.classList.remove('no-display');
+          title.classList.add("fast-fadein");
+        }, delay);
+        delay += 200;
+        // リストの各項目を順に表示
+        listItems.forEach((li, index) => {
+          setTimeout(() => {
+            li.classList.remove('no-visible');
+            li.classList.add("fast-fadein");
+          }, delay + index * 200);
+        });
+        // 最後にボタン表示（リストの後）
+        setTimeout(() => {
+          button.classList.remove('no-display');
+          button.classList.add("fast-fadein");
+          button.classList.add("active");
+        }, delay + listItems.length * 200 + 200);
+      }, 1000); // 上移動完了からさらに 1秒後
+    }, 750);
+  }, 750); // 最初の画像アニメ開始から 750ms
 }

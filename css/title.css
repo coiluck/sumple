@@ -297,6 +297,8 @@
 #title-JPN-re {
   position: absolute;
   top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 2em;
   font-family: "yujimai", serif;
   color: #ddd;
@@ -305,16 +307,20 @@
 #title-GER-re {
   position: absolute;
   top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 1em;
   font-family: "bokor", sans-serif;
   color: #ddd;
   text-shadow: 4px 2px 8px rgba(224, 224, 224, 0.8);
 }
 #restart-button {
-  display: none;
   position: absolute;
-  top: 100%;
+  top: 85%;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: "melete", sans-serif;
+  font-size: .8em;
   color: #ddd;
   background: transparent;
 }

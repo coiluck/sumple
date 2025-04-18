@@ -113,129 +113,162 @@ const gameScenarios2 = [
         title: '大日本帝国基地からの連絡',
         effects: [{ stat: 'relations', value: 10 }, { stat: 'resources', value: -200 }],
         stories: [
-          '1962年12月5日、一件の通信があった。',
-          '大日本帝国華陽基地からだった。',
-          'かの国では泥沼化した共栄圏情勢により、月面への物資援助が滞っているという。',
-          "そこで少しの援助が欲しい、と。",
-          "我々は少し迷ったが、彼らを助けることにした。"
+          '1962年12月5日、途絶えていた通信回線が一瞬だけ開いた。',
+          '発信元は、東方に位置する大日本帝国の華陽基地。',
+          '共栄圏の混迷が月面の物流にも影を落とし、物資が枯渇しつつあるという。',
+          '援助を乞う彼らの言葉は、どこか芝居がかっていたが、無視はできなかった。',
+          "我々は少し迷ったが、支援を決定した。"
         ],
         buttonText: "彼らは敵ではない。少なくとも、今は。"
       },
       {
-        title: '通信システム拡張',
-        effects: [{ stat: 'progress', value: 15 }],
+        title: '植物プラント施設',
+        effects: [{ stat: 'moon-development', value: 15 }],
         stories: [
-          '新しい衛星通信システムの設置を開始。',
-          '地球との通信が劇的に改善される。',
-          '高速データ伝送の実験に成功。'
+          '月面に自給自足の基盤を築くべく、全自動の植物プラント建設が開始された。',
+          '冷たい金属の壁に囲まれた温室に、初めての緑が芽吹く。',
+          'これは生命の実験ではなく、支配の証だ。我々は、地球の重力からも独立しようとしている。'
         ],
-        buttonText: "実験は成功だ"
+        buttonText: "これは未来の植民地の礎だ"
       },
       {
-        title: '緊急対応訓練',
-        effects: [{ stat: 'moon-development', value: 12 }],
+        title: '共同研究の提案を拒絶',
+        effects: [{ stat: 'progress', value: 12 }],
         stories: [
-          '宇宙飛行士が極限状況下での生存訓練を実施。',
-          '複雑な救助シミュレーションを完了。',
-          '危機管理能力が大幅に向上。'
+          '大日本帝国から、月面の地質調査に関する共同研究の申し出が届いた。',
+          '我々は機密保持を理由に、丁重ながら断固としてこれを拒絶した。',
+          'その選択は、静かに国際関係の気温を数度下げた。',
+          "冷たく、そして長く続く冬のように。"
         ],
-        buttonText: "我々はどんな状況でも生き延びられるだろう"
+        buttonText: "信頼なき協力は、ただの隙だ"
       }
     ],
     [
       {
-        title: '兵站船の墜落',
-        effects: [{ stat: 'resources', value: -50 }, { stat: 'progress', value: -5 }],
+        title: '地下核精製実験の開始',
+        effects: [{ stat: 'resources', value: -50 }, { stat: 'progress', value: 5 }],
         stories: [
-          '補給船が着陸中に制御不能となり墜落。',
-          '積荷の大半が損壊し、研究資料も消失した。',
-          'この損失は痛い。'
+          '月面地下深部にて、核物質の精製実験が秘密裏に開始された。',
+          '想定以上の放射線遮蔽コストと機材故障に見舞われつつも、第一段階は成功を収めた。',
+          '地球に戻れば、これは外交の切り札、もしくは開戦の導火線となるだろう。'
         ],
-        buttonText: "痛手は避けられなかった"
+        buttonText: "この成果は国家の切り札となる"
       },
       {
-        title: '暗号通信の漏洩',
-        effects: [{ stat: 'relations', value: -10 }],
+        title: '文化的親善交流',
+        effects: [{ stat: 'relations', value: 10 }],
         stories: [
-          '機密通信の一部が外部に漏洩した可能性が浮上。',
-          '日本側のメディアに我々の計画の断片が掲載される。',
-          '関係当局が調査に乗り出したが、影響は避けられない。'
+          '日本人スタッフを招いた月面文化観測会が、控えめに行われた。',
+          '展示された書物と器具の数はわずかだが、その背後には国家と国家の視線があった。',
+          'このわずかな融和も、やがて未来を形作るかもしれない。'
         ],
-        buttonText: "誰が漏らした？"
+        buttonText: "氷は、わずかに溶け始めた"
       },
       {
-        title: '研究班の内部対立',
-        effects: [{ stat: 'progress', value: -10 }],
+        title: '研究棟の居住転用',
+        effects: [{ stat: 'moon-development', value: 10 }, { stat: "progress", value: -5 }],
         stories: [
-          '複数の主任研究員の意見が真っ向から対立。',
-          '実験方針を巡って口論が続き、進行が停止。',
-          '上層部の介入により一時的に収束するも、火種は消えていない。'
+          '研究棟の一部を居住支援施設へ転用し、酸素供給能力はわずかに向上した。',
+          '研究速度は一時的に低下したが、環境の安定は何にも代えがたい。',
+          '生き延びるための選択だった。科学は、生存者の手によってのみ継がれるのだから。'
         ],
-        buttonText: "科学も政治だ"
+        buttonText: "死者に進歩はもたらせない"
       },
     ],
     [
       {
         title: '月面資源の過剰採掘',
-        effects: [{ stat: 'resources', value: 20 }],
+        effects: [{ stat: "moon-development", value: 5 }, { stat: 'resources', value: 200 }],
         stories: [
-          '資源枯渇を懸念する声を無視して採掘を強行。',
-          '予想を超える成果が得られるが、環境破壊が深刻化。',
-          '長期的な影響を懸念する研究者たちの抗議が高まる。'
+          '慎重論を押し切り、月面地下資源の強行採掘が実施された。',
+          '短期間で膨大な鉱物が得られたが、地層は破壊され、周囲の安定性が危ぶまれている。',
+          'だが、空虚な倉庫より、脆い地盤のほうがまだ役に立つ。'
         ],
-        buttonText: "資源が必要なのだ"
+        buttonText: "先を見れば足元は見えぬ"
       },
       {
-        title: '人体改良実験',
+        title: '無人区域での新型核爆発試験',
         effects: [{ stat: 'progress', value: 25 }],
         stories: [
-          '極限環境に適応するための人体改良実験が始まる。',
-          '実験対象者の中に未知の副作用を示す者が現れる。',
-          '成果と倫理の間で苦悩しながらも研究が続行される。'
+          '月面無人区域にて、最新型の核爆弾実験が行われた。',
+          '爆発波と放射線散布のデータは、計画を遥かに上回る精度を示した。',
+          'クレーターに残された焦土。それは科学の証か、破滅の前兆か。'
         ],
-        buttonText: "これでいいのか？？"
+        buttonText: "科学に後退は許されない"
       },
       {
-        title: '月面防衛システム強化',
-        effects: [{ stat: 'moon-development', value: 22 }],
+        title: '日本の調査チームの保護',
+        effects: [{ stat: 'relations', value: 22 }],
         stories: [
-          '基地の防衛を目的とした自動砲塔の設置が進む。',
-          '軍事利用への転用を懸念する声が上がる。',
-          'システムは完成し、基地の防御力が大幅に向上する。'
+          '突発的な通信障害の中、日本側調査隊からの支援信号を受信した。',
+          '我々は彼らを一時的に保護。正式な報告も、政治的意図も交わされなかった。',
+          'が、あの安堵の表情だけは、今も脳裏に焼きついている。'
         ],
-        buttonText: "戦争はしたくないものだが"
+        buttonText: "恩を売る―――それもまた戦略だ"
       }
     ],
     [
       {
-        title: '月面反乱の鎮圧',
-        effects: [{ stat: 'relations', value: -10 }, { stat: 'moon-development', value: 15 }],
+        title: '居住設備の段階的刷新',
+        effects: [ { stat: 'moon-development', value: 15 }],
         stories: [
-          '一部の作業員が待遇改善を求め反乱を起こす。',
-          '武力による鎮圧が行われ、反乱は収束。',
-          'その後、労働環境の改善策が導入される。'
+          '長く放置されていた居住設備の刷新が、ようやく始まった。',
+          '小さな個室、安定した温度管理、音漏れしない壁――それだけのことが、命をつなぐ。',
+          '小さな快適さが、大きな士気へと繋がる。'
         ],
-        buttonText: "仕方ない"
+        buttonText: "日常こそ、最も強固な防衛だ"
       },
       {
         title: '核廃棄物の処理施設設置',
         effects: [{ stat: 'progress', value: 15 }],
         stories: [
-          '核実験の副産物処理のため新施設が建設される。',
-          '作業員たちが危険な環境に直面し、士気が低下。',
-          '最終的に効率的な処理方法が確立される。'
+          '月面地下に、核実験の遺物が積み上がっていた。',
+          '腐蝕する容器と崩壊熱が、静かに危機を呼んでいた。',
+          '遅すぎた措置――だが、これ以上の災厄は避けねばならない。'
         ],
-        buttonText: "一安心だな"
+        buttonText: "進歩には、影がついてまわる"
       },
       {
-        title: '自律型探査機の試験運用',
-        effects: [{ stat: 'resources', value: 15 }, { stat: 'progress', value: 10 }],
+        title: '観測データの共有',
+        effects: [{ stat: 'relations', value: 15 }, { stat: 'progress', value: -5 }],
         stories: [
-          '新型探査機が月面での自律運用を開始。',
-          '通信トラブルや制御ミスで一時運用が中断される。',
-          '調整後、探査機は予想以上の成果を上げる。'
+          '月面の気象データと観測結果を、日本側と共有することで合意した。',
+          '信頼とはまだ言えない。軍事的価値を持たぬ範囲での情報共有のみだ。',
+          '言葉ではない。沈黙が、真の距離を物語っている。'
         ],
-        buttonText: "実験は成功だ"
+        buttonText: "冷たい同盟ほど、長く続く"
+      }
+    ],
+    [
+      {
+        title: '淡水循環技術の試験導入',
+        effects: [{ stat: 'relations', value: 10 }, { stat: 'moon-development', value: 5 }],
+        stories: [
+          '日本側の水処理技術に倣い、独自の再現実験が行われた。',
+          '共同開発ではない。模倣と検証による独自路線だ。',
+          '依存はせぬ。だが進歩の形を問う余裕も、もはやない。'
+        ],
+        buttonText: "自給こそが、統治の第一歩だ"
+      },
+      {
+        title: '核兵器の完全配備',
+        effects: [{ stat: 'progress', value: 15 }],
+        stories: [
+          '月面における核兵器の完全配備が完了した。',
+          'それは防衛ではない。抑止であり、宣告である。',
+          '誰もが知っている。この沈黙の衛星は、もう安全ではない。'
+        ],
+        buttonText: "沈黙の中にこそ、最大の威圧が宿る"
+      },
+      {
+        title: '秘密裏に第二拠点を築く',
+        effects: [{ stat: 'relations', value: -15 }, { stat: 'moon-development', value: 20 }],
+        stories: [
+          '大日本帝国との取り決めであった月面生活圏の協定を無視し、第二拠点を建設する計画が持ち上がった',
+          '実現すればかの国との政治的対立は避けられないだろうが、我々は月面開発の主導権を握ることができるだろう',
+          'やがてこの月は、完全に一つの旗のもとに統一されるだろう。'
+        ],
+        buttonText: "月面は帝国の「陽の当たる場所」だ"
       }
     ]
   ]  
@@ -393,16 +426,11 @@ function updateStatus2(effects, personnelCount) {
     // 倍率適用
     if (effect.stat === 'progress' && value >= 0) { 
       value *= window.gameDataByChar.kennkyuu;
-      console.log("スコア適用倍率 (progress): " + ratio + " * " + window.gameDataByChar.kennkyuu);
     } else if (effect.stat === 'relations' && value >= 0) {
       value *= window.gameDataByChar.kannkei;
-      console.log("スコア適用倍率 (relations): " + ratio + " * " + window.gameDataByChar.kannkei);
     } else if(effect.stat === 'resources') {
       // resourcesの場合は比率適用しない
       value = effect.value;  
-      console.log("スコア適用倍率 (relations): 1" )
-    } else if (value >= 0) {
-      console.log("スコア適用倍率 (other): " + ratio);
     }
     // 加算する前に変動値を切り捨てる
     const calculatedValue = Math.floor(value);
@@ -537,7 +565,7 @@ function determineEndingToBadEnd(){
   // すべて終わっていないor物資が足りなくなる
   // modal-resultの設定
   document.getElementById("result-title").textContent = "Bad End";
-  addItemsToList(["分岐条件にあてはまらないor物資の値が負になる"]);
+  addItemsToList(["他4つの分岐条件にあてはまらない"],["または物資の値が負になる"]);
   // モーダル移行
   document.getElementById("ENDING_TYPE").textContent = "BADEND";
   document.getElementById("modal-game2").classList.add("fadeout");
@@ -612,5 +640,5 @@ function AnimationOfResultModal() {
         }, delay + listItems.length * 200 + 200);
       }, 1000); // 上移動完了からさらに 1秒後
     }, 750);
-  }, 500); // 最初の画像アニメ開始から 750ms
+  }, 750); // 最初の画像アニメ開始から 750ms
 }
